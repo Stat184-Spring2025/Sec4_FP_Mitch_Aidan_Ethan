@@ -1,6 +1,6 @@
 # Project Title
 
-Write a 1-2 sentences that quickly and clearly convey what your repo is for.
+This project is an in-depth analysis of contracts in professional sports. We're using three professional leagues for three different sports. The NFL for football, the NHL for hockey, and the NBA for basketball. We're looking into relations in contract sizes between the sports, what factors affect the value of a contract, and if player positions affect value.
 
 ## Overview
 
