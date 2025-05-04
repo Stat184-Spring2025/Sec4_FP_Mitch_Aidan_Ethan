@@ -64,6 +64,10 @@ for (i in 1:29){
 colnames(college_rookie_stats) <- header_names
 college_rookie_stats <- college_rookie_stats %>%
   filter(Rnd != "Rnd")
+college_rookie_stats[[11]] <- as.integer(college_rookie_stats[[11]])
+college_rookie_stats[[2]] <- as.integer(college_rookie_stats[[2]])
+
+
 
 # 2020-2024 NFL draftee stats per year
 
@@ -109,8 +113,9 @@ draft_contract_scale <- ggplot(rookie_scale, aes(x = Pick, y = `Total Value` )) 
 # Draft pick vs. weighted approximate value
 pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) + 
   geom_point() + 
-  scale_y_continuous(labels = marks_no_sci) + 
-  coord_cartesian(ylim = c(0, 100))
+  geom_smooth() +
+  labs(x = "Draft Pick", y = "Weighted Approximate Value") +
+  scale_x_continuous(breaks = seq(0, 257, by = 32))
 pick_vs_wav
 
 
