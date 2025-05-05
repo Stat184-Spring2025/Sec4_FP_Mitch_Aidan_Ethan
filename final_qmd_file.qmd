@@ -13,6 +13,22 @@ The goal of our project is to see if there is a correlation between an athleteâ€
 ```{r}
 #| label: nhl
 #| echo: false
+library(tidyverse)
+library(rvest)
+library(dplyr)
+library(ggplot2)
+
+drafted2015 <- rookieContractStats2015 %>%
+  dplyr::select(Player, Pos, `Next Contract Avg Sal`, `P/GP`, `+/-`, `TOI/GP`, GP, P, PIM) %>%
+  mutate(Pos = ifelse(Pos == "C", "Forward", Pos)) %>%
+  mutate(Pos = ifelse(Pos == "L", "Forward", Pos)) %>%
+  mutate(Pos = ifelse(Pos == "R", "Forward", Pos)) %>%
+  mutate(Pos = ifelse(Pos == "D", "Defenseman", Pos))
+
+drafted2015graph <- ggplot(drafted2015, aes(x = `P/GP`, y = `Next Contract Avg Sal`, color = Pos)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "loess", se = FALSE) +
+  scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
 ```
 
 ## NBA Data
@@ -22,6 +38,11 @@ The goal of our project is to see if there is a correlation between an athleteâ€
 
 
 ## Data Visualizations/Exploratory Data Analysis
+```{r}
+#| message: false
+#| warning: false
+drafted2015graph
+```
 
 
 ## FAIR/CARE
