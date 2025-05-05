@@ -1,0 +1,32 @@
+---
+title: "final_qmd_file"
+author: "Aidan, Ethan, and Mitchell Darling"
+date: "5/7/2025"
+format: pdf
+---
+
+## Overview/Introduction
+The goal of our project is to see if there is a correlation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
+
+## NHL Data
+
+```{r}
+#| label: nhl
+#| echo: false
+```
+
+## NBA Data
+
+
+## NFL Data
+
+
+## Data Visualizations/Exploratory Data Analysis
+
+
+## FAIR/CARE
+
+
+## Code Apendix
+```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
