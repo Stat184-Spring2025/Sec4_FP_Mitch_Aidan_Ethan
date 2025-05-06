@@ -16,12 +16,16 @@
 # install.packages("nflreadr")
 # install.packages("ggplot2")
 # install.packages("dplyr")
+# install.packages("hrbrthemes")
+# install.packages("viridis")
 library(nflreadr)
 library(rvest)
 library(tidyverse)
 library(googlesheets4)
 library(ggplot2)
 library(dplyr)
+library(hrbrthemes)
+library(viridis)
 
 # Scraping ----
 # NFL signing and salary table (only top 100 due to paywall)
@@ -117,6 +121,17 @@ pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) +
   labs(x = "Draft Pick", y = "Weighted Approximate Value") +
   scale_x_continuous(breaks = seq(0, 257, by = 32))
 pick_vs_wav
+
+# Position vs. average contract value
+player_contracts <- load_contracts()
+player_contracts[[7]] <- as.integer(player_contracts[[7]])
+player_contracts <- player_contracts %>% filter(year_signed >= 2020)
+View(player_contracts)
+pos_vs_contract <- ggplot(player_contracts, aes(x = position, y = value, fill = position)) +
+  geom_boxplot() +
+  xlab("Player Position") +
+  ylab("Contract Value (in millions)")
+pos_vs_contract
 
 
 
