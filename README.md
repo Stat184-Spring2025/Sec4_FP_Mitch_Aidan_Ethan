@@ -1,10 +1,10 @@
 # Project Title
 
-This project is an in-depth analysis of contracts in professional sports. We're using three professional leagues for three different sports. The NFL for football, the NHL for hockey, and the NBA for basketball. We're looking into relations in contract sizes between the sports, what factors affect the value of a contract, and if player positions affect value.
+This project is an in-depth analysis of contract value and factors that affect it in professional sports. We're using three American professional leagues for three different sports. The NFL for (American) football, the NHL for hockey, and the NBA for basketball. We're looking into relations in contract sizes between the sports, what factors affect the value of a contract, and if player positions affect value.
 
 ## Overview
 
-Expand on those introductory sentences with a brief but informative description of your project's purpose and goals. This section should help visitors decide whether they should dig deeper into your repo/project.
+This project is divided into four main sections. Three for the analyses of the three professional sports leagues, and one for drawing relations between factors that affect contract value for each sport. Each of the three league sections will conduct an EDA based approach to the question at hand by identifying what factor(s) affect the size of a player's rookie contract and subsequent contracts.
 
 ### Interesting Insight
 
@@ -20,4 +20,5 @@ Be sure to list where you got any data used within the project. Be sure to ackno
 
 ## Authors
 
-Give information about who are the authors of the project and how people can get in touch if they have questions.
+For questions pretaining to the research project contact the following authors:
+- Ethan Martin -- evm5766@psu.edu
