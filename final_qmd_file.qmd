@@ -18,6 +18,19 @@ library(tidyverse)
 library(rvest)
 library(dplyr)
 library(ggplot2)
+library(readxl)
+
+nhl_draft_2015 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2015.xlsx")
+nhl_draft_2016 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2016.xlsx")
+rookies_2015_to_2017 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2017.xlsx")
+rookies_2015_to_2018 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2018.xlsx")
+rookies_2015_to_2019 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2019.xlsx")
+rookies_2015_to_2020 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2020.xlsx")
+rookies_2016_to_2018 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2018.xlsx")
+rookies_2016_to_2019 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2019.xlsx")
+rookies_2016_to_2020 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2020.xlsx")
+rookies_2016_to_2021 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2021.xlsx")
+
 
 rookies2015to2017 <- nhl_draft_2015 %>%
   filter(`End of Rookie Contract` == 2017)
