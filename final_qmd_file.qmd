@@ -5,21 +5,24 @@ date: "5/7/2025"
 format: pdf
 ---
 
-## Overview/Introduction
-The goal of our project is to see if there is a correlation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
+## Overview
+The goal of our project is to see if there is a relation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
 
 ## NHL Data
 
 ```{r}
-#| label: nhl
+#| label: NHL data
 #| echo: false
 #| warning: false
+
+#loading the neccessary packages
 library(tidyverse)
 library(rvest)
 library(dplyr)
 library(ggplot2)
 library(readxl)
 
+#importing data
 nhl_draft_2015 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2015.xlsx")
 nhl_draft_2016 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2016.xlsx")
 rookies_2015_to_2017 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2017.xlsx")
@@ -31,7 +34,7 @@ rookies_2016_to_2019 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final P
 rookies_2016_to_2020 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2020.xlsx")
 rookies_2016_to_2021 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2021.xlsx")
 
-
+#filtering the data
 rookies2015to2017 <- nhl_draft_2015 %>%
   filter(`End of Rookie Contract` == 2017)
 
@@ -56,6 +59,7 @@ rookies2016to2020 <- nhl_draft_2016 %>%
 rookies2016to2021 <- nhl_draft_2016 %>%
   filter(`End of Rookie Contract` == 2021)
 
+#merges the filtered data with player stats
 rookieStats2015to2017 <- left_join(
   x = rookies2015to2017,
   y = rookies_2015_to_2017,
@@ -120,6 +124,7 @@ rookieStats2016to2021 <- left_join(
   drop_na() %>%
   mutate(S = as.numeric(S))
 
+#combines all data sets and generalizes the positions 
 all_rookie_stats <- bind_rows(
   rookieStats2015to2017,
   rookieStats2015to2018,
@@ -136,21 +141,42 @@ all_rookie_stats <- bind_rows(
   mutate(Position = ifelse(Position == "RW", "Forward", Position)) %>%
   mutate(Position = ifelse(Position == "D", "Defenseman", Position))
 
-
+#creates points per game graph
 ppg_graph <- ggplot(all_rookie_stats, aes(x = `P/GP`, y = `Average Salary of Next Contract`)) +
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
   scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
 
-ppg_graph_years <- ggplot(all_rookie_stats, aes(x = `P/GP`, y = `Length of Next Contract`)) +
-  geom_point(size = 3) +
-  geom_smooth(method = "loess", se = FALSE)
-
-ppg_graph_gp <- ggplot(all_rookie_stats, aes(x = `GP`, y = `Average Salary of Next Contract`)) +
+#creates games played graph
+gp_graph <- ggplot(all_rookie_stats, aes(x = `GP`, y = `Average Salary of Next Contract`)) +
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
   scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
 ```
+  The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
+  
+  The NHL player statistics were pulled from nhl.com using their export feature. Their website allows users to filter statistics for players drafted in certain drafts across specific seasons. They provide an export button to export the filtered statistics into an excel file. The contract data was taken from spotrac.com. There was no way to scrape the data directly using R because there was not a page that had all of the information I needed. I had to manually enter player's contract information into an excel file that had the first 50 players drafted in 2015 and 2016. I then had to wrangle the data to remove cases that had empty values. I was then able to merge the files together so every player had their correct statistics for their rookie contract. This resulted in each case being individual player.
+  
+  This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned.
+  
+```{R}
+#| label: NHL P/GP Graph
+#| echo: false
+#| message: false
+#| warning: false
+ppg_graph
+```
+  This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
+
+```{R}
+#| label: NHL GP Graph
+#| echo: false
+#| message: false
+#| warning: false
+gp_graph
+```
+
+  This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played.
 
 ## NBA Data
 
@@ -159,13 +185,7 @@ ppg_graph_gp <- ggplot(all_rookie_stats, aes(x = `GP`, y = `Average Salary of Ne
 
 
 ## Data Visualizations/Exploratory Data Analysis
-```{r}
-#| message: false
-#| warning: false
-ppg_graph
-ppg_graph_years
-ppg_graph_gp
-```
+
 
 
 ## FAIR/CARE
