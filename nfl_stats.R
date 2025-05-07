@@ -108,8 +108,6 @@ college_rookie_stats <- college_rookie_stats %>%
 college_rookie_stats[[11]] <- as.integer(college_rookie_stats[[11]])
 college_rookie_stats[[2]] <- as.integer(college_rookie_stats[[2]])
 
-
-
 # 2020-2024 NFL draftee stats per year
 
 player_stats_2020 <- load_player_stats(2020)
@@ -141,37 +139,6 @@ rookie_stats_2022 <- semi_join(player_stats_2022, college_rookie_stats, by = "Pl
 rookie_stats_2023 <- semi_join(player_stats_2023, college_rookie_stats, by = "Player")
 rookie_stats_2024 <- semi_join(player_stats_2024, college_rookie_stats, by = "Player")
 
-# Visualizations ----
-# Contract signing scale
-marks_no_sci <- function(x) format(x, big.mark = ",", decimal.mark = ",", scientific = FALSE)
-draft_contract_scale <- ggplot(rookie_scale, aes(x = Pick, y = `Total Value` )) +
-  geom_line() +
-  scale_y_continuous(labels = marks_no_sci) + 
-  coord_cartesian(ylim = c(0, 40000000)) +
-  ylab("Total Value in Dollars ($)") +
-  scale_x_continuous(breaks = seq(0, 255, by = 32))
-
-## Position vs. average contract value
-player_contracts <- load_contracts()
-player_contracts[[7]] <- as.integer(player_contracts[[7]])
-player_contracts <- player_contracts %>%
-  filter(year_signed >= 2020) %>%
-  filter(value > 0)
-pos_vs_contract <- ggplot(player_contracts, aes(x = position, y = value, fill = position)) +
-  geom_point() +
-  xlab("Player Position") +
-  ylab("Contract Value (in millions)") +
-  guides(fill = FALSE)
-pos_vs_contract
-
-# Draft pick vs. weighted approximate value
-pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) + 
-  geom_point() + 
-  geom_smooth() +
-  labs(x = "Draft Pick", y = "Weighted Approximate Value") +
-  scale_x_continuous(breaks = seq(0, 257, by = 32))
-pick_vs_wav
-
 # Skill Position wrangling ----
 ## QB
 rookie_stats_2020_qb <- rookie_stats_2020 %>%
@@ -183,7 +150,6 @@ rookie_stats_2020_qb <- rookie_stats_2020 %>%
             yds = sum(passing_air_yards),
             passing_td = sum(passing_tds),
             ints = sum(interceptions),
-            epa = sum(passing_epa),
             rushes = sum(carries),
             rush_yds = sum(rushing_yards),
             )
@@ -196,7 +162,6 @@ rookie_stats_2021_qb <- rookie_stats_2021 %>%
             yds = sum(passing_air_yards),
             passing_td = sum(passing_tds),
             ints = sum(interceptions),
-            epa = sum(passing_epa),
             rushes = sum(carries),
             rush_yds = sum(rushing_yards),
   )
@@ -209,7 +174,6 @@ rookie_stats_2022_qb <- rookie_stats_2022 %>%
             yds = sum(passing_air_yards),
             passing_td = sum(passing_tds),
             ints = sum(interceptions),
-            epa = sum(passing_epa),
             rushes = sum(carries),
             rush_yds = sum(rushing_yards),
   )
@@ -222,7 +186,6 @@ rookie_stats_2023_qb <- rookie_stats_2023 %>%
             yds = sum(passing_air_yards),
             passing_td = sum(passing_tds),
             ints = sum(interceptions),
-            epa = sum(passing_epa),
             rushes = sum(carries),
             rush_yds = sum(rushing_yards),
   )
@@ -235,7 +198,6 @@ rookie_stats_2024_qb <- rookie_stats_2024 %>%
             yds = sum(passing_air_yards),
             passing_td = sum(passing_tds),
             ints = sum(interceptions),
-            epa = sum(passing_epa),
             rushes = sum(carries),
             rush_yds = sum(rushing_yards),
   )
@@ -364,21 +326,145 @@ rookie_stats_2024_wr <- rookie_stats_2024 %>%
             rush_yds = sum(rushing_yards),
             rush_tds = sum(rushing_tds),
             total_yds = sum(receiving_yards, rushing_yards),
-            total_tds = sum(receiving_tds, rushing_tds),
+            total_tds = sum(receiving_tds, rushing_tds)
   )
+total_rookie_stats_wr <-bind_rows(
+  list(rookie_stats_2020_wr, rookie_stats_2021_wr, rookie_stats_2022_wr, rookie_stats_2023_wr, rookie_stats_2024_wr)
+) %>%
+  group_by(Player) %>%
+  summarise(catches = sum(catches),
+            rec_yds = sum(rec_yds),
+            rec_td = sum(rec_td),
+            fumbles = sum(fumbles),
+            yac = sum(yac),
+            rush_yds = sum(rush_yds),
+            rush_tds = sum(rush_tds),
+            total_yds = sum(total_yds),
+            tds = sum(total_tds)
+  )
+total_rookie_stats_wr_salary <- inner_join(
+  x = total_rookie_stats_wr,
+  y = extensions_wr,
+  by = join_by(Player == Player)
+)
+total_rookie_stats_wr_salary$`Value` = as.numeric(gsub("[\\$,]","", total_rookie_stats_wr_salary$`Value`))
+
+
+total_rookie_stats_rb <-bind_rows(
+  list(rookie_stats_2020_rb, rookie_stats_2021_rb, rookie_stats_2022_rb, rookie_stats_2023_rb, rookie_stats_2024_rb)
+)  %>%
+  group_by(Player) %>%
+  summarise(rushes = sum(rushes),
+            rush_yds = sum(rush_yds),
+            rush_tds = sum(rush_tds),
+            fumbles = sum(fumbles),
+            receptions = sum(receptions),
+            rec_yds = sum(rec_yds),
+            tds = sum(rec_tds),
+            total_yds = sum(total_yds)
+  )
+total_rookie_stats_rb_salary <- inner_join(
+  x = total_rookie_stats_rb,
+  y = extensions_rb,
+  by = join_by(Player == Player)
+)
+total_rookie_stats_rb_salary$`Value` = as.numeric(gsub("[\\$,]","", total_rookie_stats_rb_salary$`Value`))
+
 
 # 2020 Draft Class extensions
-
 rookie_extensions <- semi_join(extensions_all, college_rookie_stats, by = "Player")
 extensions_qb <- rookie_extensions %>% filter(Pos == "QB")
 extensions_wr <- rookie_extensions %>% filter(Pos == "WR")
 extensions_rb <- rookie_extensions %>% filter(Pos == "RB")
+extensions_te <- rookie_extensions %>% filter(Pos == "TE")
 extensions_db <- rookie_extensions %>% filter(Pos == "CB" | Pos == "S")
-extensions_ol <- rookie_extensions %>% filter(Pos == "LT" | Pos == "RT" | Pos == "G" | Pos == "C" | )
+extensions_ol <- rookie_extensions %>% filter(Pos == "LT" | Pos == "RT" | Pos == "G" | Pos == "C")
+extensions_dl <- rookie_extensions %>% filter(Pos == "DT")
+extensions_lb <- rookie_extensions %>% filter(Pos == "ILB" | Pos == "OLB")
+extensions_st <- rookie_extensions %>% filter(Pos == "LS" | Pos == "K")
 
+# Visualizations ----
+# Contract signing scale
+marks_no_sci <- function(x) format(x, big.mark = ",", decimal.mark = ",", scientific = FALSE)
+draft_contract_scale <- ggplot(rookie_scale, aes(x = Pick, y = `Total Value` )) +
+  geom_line() +
+  scale_y_continuous(labels = marks_no_sci) + 
+  coord_cartesian(ylim = c(0, 40000000)) +
+  ylab("Total Value in Dollars ($)") +
+  scale_x_continuous(breaks = seq(0, 255, by = 32)) + 
+  geom_vline(xintercept = 32, color = "orange", linewidth = 1, alpha = 0.4) +
+  geom_vline(xintercept = 64, color = "orange", linewidth = 1, alpha = 0.4) +
+  geom_vline(xintercept = 106, color = "orange", linewidth = 1, alpha = 0.4)
+  
 
+## Position vs. average contract value
+player_contracts <- load_contracts()
+player_contracts[[7]] <- as.integer(player_contracts[[7]])
+player_contracts <- player_contracts %>%
+  filter(year_signed >= 2020) %>%
+  filter(value > 0)
+pos_vs_contract <- ggplot(player_contracts, aes(x = position, y = value, fill = position)) +
+  geom_point() +
+  xlab("Player Position") +
+  ylab("Contract Value (in millions)") +
+  guides(fill = FALSE)
+pos_vs_contract
 
+# Draft pick vs. weighted approximate value
+pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) + 
+  geom_point() + 
+  geom_smooth() +
+  labs(x = "Draft Pick", y = "Weighted Approximate Value") +
+  scale_x_continuous(breaks = seq(0, 257, by = 32))
+pick_vs_wav
 
+# QBR vs Salary
+total_rookie_stats_qb <- bind_rows(
+  list(rookie_stats_2020_qb, rookie_stats_2021_qb, rookie_stats_2022_qb, rookie_stats_2023_qb, rookie_stats_2024_qb)) %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(total_yds),
+            comp = sum(comp),
+            att = sum(att),
+            yds = sum(yds),
+            tds = sum(passing_td),
+            ints = sum(ints),
+            rushes = sum(rushes),
+            rush_yds = sum(rush_yds),
+            qbr = (((((sum(comp) / sum(att)) - 0.3) * 5) +
+                    (((sum(yds)/sum(att)) - 3) * 0.25) +
+                    ((sum(passing_td)/sum(att) * 20)) +
+                    (2.375 - (sum(ints)/sum(att)) * 25)
+                    ) / 6) * 100
+  )
+total_rookie_stats_qb_salary <- inner_join(
+  x = total_rookie_stats_qb,
+  y = extensions_qb,
+  by = join_by(Player == Player)
+)
+total_rookie_stats_qb_salary$`Value` = as.numeric(gsub("[\\$,]","", total_rookie_stats_qb_salary$`Value`))
 
+rating_vs_salary <- ggplot(data = total_rookie_stats_qb_salary,
+                           aes(x = qbr, y = Value, size = passing_td)) +
+  geom_point() +
+  labs(x = "Passer Rating", y = "Next Contract Value in dollars ($)") + 
+  coord_cartesian(ylim = c(0, 300000000)) +
+  scale_y_continuous(labels = marks_no_sci)
+
+# Skill position scores vs. salary
+View(total_rookie_stats_qb_salary)
+View(total_rookie_stats_rb_salary)
+View(total_rookie_stats_wr_salary)
+
+stats_salary <- bind_rows(
+  list(total_rookie_stats_qb_salary, total_rookie_stats_rb_salary, total_rookie_stats_wr_salary)
+)
+
+stats_salary_plot <- ggplot(data = stats_salary,
+       aes(x = tds, y = Value, shape = Pos, color = Pos)) + 
+  geom_point(size = 6) +
+  labs(x = "Total Touchdowns", y = "Next Contract Value") + 
+  coord_cartesian(ylim = c(0, 300000000)) +
+  scale_y_continuous(labels = marks_no_sci)
+stats_salary_plot
 
 
