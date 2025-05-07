@@ -71,7 +71,7 @@ We present the guidelines as a checklist in this file. This means that your team
   - [ ]  You should properly cite any work you reference (including data) according to your choice of citation style. We've included files for APA7 and MLA9 as part of this template. If you want to use a different citation style, you will need download the CSL file from the [Zotero Style Respository](https://www.zotero.org/styles/) and include it in your team's repo.
     - __Fall Back Plan__ You can also put your citations as footnotes and make your own reference list at the end of your document.
 - [X] Use GitHub to share changes and edits; there should be multiple commits to your repo.
-  - [ ] Each team should update the included README file to match their project.
+  - [X] Each team should update the included README file to match their project.
   - [ ] Each team member must have at least two (2) commits in the repo's history.
   - [X] There should be a Main branch and at least one development ("dev") branch for the repo.
   - [X] There should be at must be at least one Pull Request that resulted in a successful merging of two branches.
