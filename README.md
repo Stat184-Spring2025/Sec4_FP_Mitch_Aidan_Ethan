@@ -1,4 +1,4 @@
-# Project Title
+# Rookie Contract Analysis
 
 This project is an in-depth analysis of contract value and factors that affect it in professional sports. We're using three American professional leagues for three different sports. The NFL for (American) football, the NHL for hockey, and the NBA for basketball. We're looking into relations in contract sizes between the sports, what factors affect the value of a contract, and if player positions affect value.
 
