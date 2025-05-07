@@ -15,7 +15,7 @@ The goal of our project is to see if there is a relation between an athlete’s 
 #| echo: false
 #| warning: false
 
-#loading the neccessary packages
+#loading the necessary packages
 library(tidyverse)
 library(rvest)
 library(dplyr)
@@ -168,7 +168,9 @@ ppg_graph <- ggplot(
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
   scale_y_continuous(labels = function(x) paste0(x / 1e6, " million")) +
-  ggtitle("Points/Game vs. Average Salary of Their Next Contract")
+  labs(
+    title = "Points/Game vs. Average Salary of Their Next Contract"
+  )
 
 #creates games played graph
 gp_graph <- ggplot(all_rookie_stats, aes(
@@ -177,7 +179,9 @@ gp_graph <- ggplot(all_rookie_stats, aes(
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
   scale_y_continuous(labels = function(x) paste0(x / 1e6, " million")) +
-  ggtitle("Games Played vs. Average Salary of Their Next Contract")
+  labs(
+    title = "Games Played vs. Average Salary of Their Next Contract"
+  )
 ```
   The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
   
@@ -213,7 +217,7 @@ gp_graph
 
 
 ## Comparing Sports
-
+  All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
 
 ## Code Apendix
 ```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
