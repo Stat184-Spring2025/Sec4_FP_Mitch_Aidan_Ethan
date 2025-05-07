@@ -8,15 +8,16 @@ This project is divided into four main sections. Three for the analyses of the t
 
 ### Interesting Insight
 
-This is optional but highly recommended. You'll include one interesting insight from your project as part of the README. This insight is most effective when you include a visual. Keep in mind that this visual must be included as an image file (e.g., JPG, PNG, etc.). You can export plots created with `{ggplot2}` by using the function `ggsave`.
+I found that in the NHL, a player's +/- has no relation to their next contract's value. +/- is a statistic that measures the score difference when a player is on the ice. For example, if someone is on the ice when their team scores a goal, their +/- goes up by 1. I was surprised by this because the +/- statistic is often used in other sports, like the NBA, to evaluate a player's impact.
 
 ## Repo Structure
 
-Use this section to explain the structure of your repo. This should help visitors quickly figure out where they should look to find certain elements. Further, you can use this space to highlight and briefly explain important/key files in the repo.
+In our repo we have files that need to be downloaded if someone wishes to run our code on their device. We also have the final report saved as a qmd file and as a pdf file.
 
 ## Data Sources and Acknowledgements
 
-Be sure to list where you got any data used within the project. Be sure to acknowledge any one whose work or elements you're drawing upon.
+https://www.nhl.com/stats/
+https://www.spotrac.com/nhl/
 
 ## Authors
 
