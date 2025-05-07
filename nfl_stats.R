@@ -369,6 +369,14 @@ rookie_stats_2024_wr <- rookie_stats_2024 %>%
 
 # 2020 Draft Class extensions
 
+rookie_extensions <- semi_join(extensions_all, college_rookie_stats, by = "Player")
+extensions_qb <- rookie_extensions %>% filter(Pos == "QB")
+extensions_wr <- rookie_extensions %>% filter(Pos == "WR")
+extensions_rb <- rookie_extensions %>% filter(Pos == "RB")
+extensions_db <- rookie_extensions %>% filter(Pos == "CB" | Pos == "S")
+extensions_ol <- rookie_extensions %>% filter(Pos == "LT" | Pos == "RT" | Pos == "G" | Pos == "C" | )
+
+
 
 
 
