@@ -26,13 +26,50 @@ library(ggplot2)
 library(dplyr)
 library(hrbrthemes)
 library(viridis)
+library(data.table)
 
 # Scraping ----
-# NFL signing and salary table (only top 100 due to paywall)
+# NFL signing and salary table 
 nfl_salary_raw <- read_html_live("https://www.spotrac.com/nfl/contracts") %>%
   html_elements(css = "table") %>%
   html_table()
 nfl_salary <- nfl_salary_raw[[2]]
+
+# NFL contract extensions since 2021
+extensions_2021_raw <- read_html_live("https://www.spotrac.com/nfl/contracts/extensions/_/year/2021") %>%
+  html_elements(css = "table") %>%
+  html_table()
+extensions_2021 <- extensions_2021_raw[[2]]
+
+extensions_2022_raw <- read_html_live("https://www.spotrac.com/nfl/contracts/extensions/_/year/2022/") %>%
+  html_elements(css = "table") %>%
+  html_table()
+extensions_2022 <- extensions_2022_raw[[2]]
+
+extensions_2023_raw <- read_html_live("https://www.spotrac.com/nfl/contracts/extensions/_/year/2023/") %>%
+  html_elements(css = "table") %>%
+  html_table()
+extensions_2023 <- extensions_2023_raw[[2]]
+
+extensions_2024_raw <- read_html_live("https://www.spotrac.com/nfl/contracts/extensions/_/year/2024/") %>%
+  html_elements(css = "table") %>%
+  html_table()
+extensions_2024 <- extensions_2024_raw[[2]]
+
+extensions_2025_raw <- read_html_live("https://www.spotrac.com/nfl/contracts/extensions/_/year/2025/") %>%
+  html_elements(css = "table") %>%
+  html_table()
+extensions_2025 <- extensions_2025_raw[[2]]
+ 
+names(extensions_2021)[2] <- "Player"
+names(extensions_2022)[2] <- "Player"
+names(extensions_2023)[2] <- "Player"
+names(extensions_2024)[2] <- "Player"
+names(extensions_2025)[2] <- "Player"
+
+extensions_all <- bind_rows(
+  list(extensions_2021, extensions_2022, extensions_2023, extensions_2024, extensions_2025)
+)
 
 # NFL rookie contract "signing scale" for the 2020 draft year by pick
 rookie_scale_raw <- read_html_live("https://www.spotrac.com/nfl/cba/rookie-scale/_/year/2020") %>%
@@ -91,7 +128,7 @@ player_stats_2024 <- load_player_stats(2024)
 colnames(player_stats_2024)[3] <- "Player"
 
 # 2020 NFL draft table with contract
-rookie_contracts_raw <- read_html_live("https://www.spotrac.com/nfl/draft/_/year/2020/sort/pickhttps://www.spotrac.com/nfl/draft/_/year/2024/sort/pick") %>%
+rookie_contracts_raw <- read_html_live("https://www.spotrac.com/nfl/draft/_/year/2020/sort/pickhttps://www.spotrac.com/nfl/draft/_/year/2020/sort/pick") %>%
   html_elements(css = "table") %>%
   html_table()
 rookie_contracts <- rookie_contracts_raw[[1]]
@@ -114,6 +151,19 @@ draft_contract_scale <- ggplot(rookie_scale, aes(x = Pick, y = `Total Value` )) 
   ylab("Total Value in Dollars ($)") +
   scale_x_continuous(breaks = seq(0, 255, by = 32))
 
+## Position vs. average contract value
+player_contracts <- load_contracts()
+player_contracts[[7]] <- as.integer(player_contracts[[7]])
+player_contracts <- player_contracts %>%
+  filter(year_signed >= 2020) %>%
+  filter(value > 0)
+pos_vs_contract <- ggplot(player_contracts, aes(x = position, y = value, fill = position)) +
+  geom_point() +
+  xlab("Player Position") +
+  ylab("Contract Value (in millions)") +
+  guides(fill = FALSE)
+pos_vs_contract
+
 # Draft pick vs. weighted approximate value
 pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) + 
   geom_point() + 
@@ -122,16 +172,203 @@ pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) +
   scale_x_continuous(breaks = seq(0, 257, by = 32))
 pick_vs_wav
 
-# Position vs. average contract value
-player_contracts <- load_contracts()
-player_contracts[[7]] <- as.integer(player_contracts[[7]])
-player_contracts <- player_contracts %>% filter(year_signed >= 2020)
-View(player_contracts)
-pos_vs_contract <- ggplot(player_contracts, aes(x = position, y = value, fill = position)) +
-  geom_boxplot() +
-  xlab("Player Position") +
-  ylab("Contract Value (in millions)")
-pos_vs_contract
+# Skill Position wrangling ----
+## QB
+rookie_stats_2020_qb <- rookie_stats_2020 %>%
+  filter(position == "QB") %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(passing_yards),
+            comp = sum(completions),
+            att = sum(attempts),
+            yds = sum(passing_air_yards),
+            passing_td = sum(passing_tds),
+            ints = sum(interceptions),
+            epa = sum(passing_epa),
+            rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+            )
+rookie_stats_2021_qb <- rookie_stats_2021 %>%
+  filter(position == "QB") %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(passing_yards),
+            comp = sum(completions),
+            att = sum(attempts),
+            yds = sum(passing_air_yards),
+            passing_td = sum(passing_tds),
+            ints = sum(interceptions),
+            epa = sum(passing_epa),
+            rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+  )
+rookie_stats_2022_qb <- rookie_stats_2022 %>%
+  filter(position == "QB") %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(passing_yards),
+            comp = sum(completions),
+            att = sum(attempts),
+            yds = sum(passing_air_yards),
+            passing_td = sum(passing_tds),
+            ints = sum(interceptions),
+            epa = sum(passing_epa),
+            rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+  )
+rookie_stats_2023_qb <- rookie_stats_2023 %>%
+  filter(position == "QB") %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(passing_yards),
+            comp = sum(completions),
+            att = sum(attempts),
+            yds = sum(passing_air_yards),
+            passing_td = sum(passing_tds),
+            ints = sum(interceptions),
+            epa = sum(passing_epa),
+            rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+  )
+rookie_stats_2024_qb <- rookie_stats_2024 %>%
+  filter(position == "QB") %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(passing_yards),
+            comp = sum(completions),
+            att = sum(attempts),
+            yds = sum(passing_air_yards),
+            passing_td = sum(passing_tds),
+            ints = sum(interceptions),
+            epa = sum(passing_epa),
+            rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+  )
+## RB
+rookie_stats_2020_rb <- rookie_stats_2020 %>%
+  filter(position == "RB") %>%
+  group_by(Player) %>%
+  summarise(rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            fumbles = sum(rushing_fumbles_lost, receiving_fumbles_lost),
+            receptions = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_tds = sum(receiving_tds),
+            total_yds = sum(rushing_yards, receiving_yards)
+  )
+rookie_stats_2021_rb <- rookie_stats_2021 %>%
+  filter(position == "RB") %>%
+  group_by(Player) %>%
+  summarise(rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            fumbles = sum(rushing_fumbles_lost, receiving_fumbles_lost),
+            receptions = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_tds = sum(receiving_tds),
+            total_yds = sum(rushing_yards, receiving_yards)
+  )
+rookie_stats_2022_rb <- rookie_stats_2022 %>%
+  filter(position == "RB") %>%
+  group_by(Player) %>%
+  summarise(rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            fumbles = sum(rushing_fumbles_lost, receiving_fumbles_lost),
+            receptions = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_tds = sum(receiving_tds),
+            total_yds = sum(rushing_yards, receiving_yards)
+  )
+rookie_stats_2023_rb <- rookie_stats_2023 %>%
+  filter(position == "RB") %>%
+  group_by(Player) %>%
+  summarise(rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            fumbles = sum(rushing_fumbles_lost, receiving_fumbles_lost),
+            receptions = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_tds = sum(receiving_tds),
+            total_yds = sum(rushing_yards, receiving_yards)
+  )
+rookie_stats_2024_rb <- rookie_stats_2024 %>%
+  filter(position == "RB") %>%
+  group_by(Player) %>%
+  summarise(rushes = sum(carries),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            fumbles = sum(rushing_fumbles_lost, receiving_fumbles_lost),
+            receptions = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_tds = sum(receiving_tds),
+            total_yds = sum(rushing_yards, receiving_yards)
+  )
+## WR
+rookie_stats_2020_wr <- rookie_stats_2020 %>%
+  filter(position == "WR") %>%
+  group_by(Player) %>%
+  summarise(catches = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_td = sum(receiving_tds),
+            fumbles = sum(receiving_fumbles_lost, rushing_fumbles_lost),
+            yac = sum(receiving_yards_after_catch),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            total_yds = sum(receiving_yards, rushing_yards),
+            total_tds = sum(receiving_tds, rushing_tds),
+  )
+rookie_stats_2021_wr <- rookie_stats_2021 %>%
+  filter(position == "WR") %>%
+  group_by(Player) %>%
+  summarise(catches = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_td = sum(receiving_tds),
+            fumbles = sum(receiving_fumbles_lost, rushing_fumbles_lost),
+            yac = sum(receiving_yards_after_catch),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            total_yds = sum(receiving_yards, rushing_yards),
+            total_tds = sum(receiving_tds, rushing_tds),
+  )
+rookie_stats_2022_wr <- rookie_stats_2022 %>%
+  filter(position == "WR") %>%
+  group_by(Player) %>%
+  summarise(catches = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_td = sum(receiving_tds),
+            fumbles = sum(receiving_fumbles_lost, rushing_fumbles_lost),
+            yac = sum(receiving_yards_after_catch),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            total_yds = sum(receiving_yards, rushing_yards),
+            total_tds = sum(receiving_tds, rushing_tds),
+  )
+rookie_stats_2023_wr <- rookie_stats_2023 %>%
+  filter(position == "WR") %>%
+  group_by(Player) %>%
+  summarise(catches = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_td = sum(receiving_tds),
+            fumbles = sum(receiving_fumbles_lost, rushing_fumbles_lost),
+            yac = sum(receiving_yards_after_catch),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            total_yds = sum(receiving_yards, rushing_yards),
+            total_tds = sum(receiving_tds, rushing_tds),
+  )
+rookie_stats_2024_wr <- rookie_stats_2024 %>%
+  filter(position == "WR") %>%
+  group_by(Player) %>%
+  summarise(catches = sum(receptions),
+            rec_yds = sum(receiving_yards),
+            rec_td = sum(receiving_tds),
+            fumbles = sum(receiving_fumbles_lost, rushing_fumbles_lost),
+            yac = sum(receiving_yards_after_catch),
+            rush_yds = sum(rushing_yards),
+            rush_tds = sum(rushing_tds),
+            total_yds = sum(receiving_yards, rushing_yards),
+            total_tds = sum(receiving_tds, rushing_tds),
+  )
+
+# 2020 Draft Class extensions
+
 
 
 
