@@ -18,6 +18,11 @@
 # install.packages("dplyr")
 # install.packages("hrbrthemes")
 # install.packages("viridis")
+# install.packages("janitor")
+# install.packages("knitr")
+# install.packages("kableExtra")
+# install.packages("ggpmisc")
+
 library(nflreadr)
 library(rvest)
 library(tidyverse)
@@ -27,6 +32,10 @@ library(dplyr)
 library(hrbrthemes)
 library(viridis)
 library(data.table)
+library(janitor)
+library(knitr)
+library(kableExtra)
+library(ggpmisc)
 
 # Scraping ----
 # NFL signing and salary table 
@@ -349,7 +358,6 @@ total_rookie_stats_wr_salary <- inner_join(
 )
 total_rookie_stats_wr_salary$`Value` = as.numeric(gsub("[\\$,]","", total_rookie_stats_wr_salary$`Value`))
 
-
 total_rookie_stats_rb <-bind_rows(
   list(rookie_stats_2020_rb, rookie_stats_2021_rb, rookie_stats_2022_rb, rookie_stats_2023_rb, rookie_stats_2024_rb)
 )  %>%
@@ -451,20 +459,38 @@ rating_vs_salary <- ggplot(data = total_rookie_stats_qb_salary,
   scale_y_continuous(labels = marks_no_sci)
 
 # Skill position scores vs. salary
-View(total_rookie_stats_qb_salary)
-View(total_rookie_stats_rb_salary)
-View(total_rookie_stats_wr_salary)
-
 stats_salary <- bind_rows(
   list(total_rookie_stats_qb_salary, total_rookie_stats_rb_salary, total_rookie_stats_wr_salary)
 )
-
 stats_salary_plot <- ggplot(data = stats_salary,
        aes(x = tds, y = Value, shape = Pos, color = Pos)) + 
   geom_point(size = 6) +
-  labs(x = "Total Touchdowns", y = "Next Contract Value") + 
+  labs(x = "Total Touchdowns", y = "Next Contract Value ($)") + 
   coord_cartesian(ylim = c(0, 300000000)) +
   scale_y_continuous(labels = marks_no_sci)
 stats_salary_plot
+
+dollar_per_td_by_pos <- stats_salary %>%
+  group_by(Pos) %>%
+  summarise(Touchdowns = sum(tds),
+            `Total Salary` = sum(Value),
+            `td/dollar` = sum(Value)/sum(tds)
+  ) %>%
+  adorn_totals(where = c("row")) %>%
+  adorn_percentages(denominator = "col") %>%
+  adorn_pct_formatting(digits = 2)
+formatNs <- attr(dollar_per_td_by_pos, "core") %>%
+  adorn_totals(where = c("row")) %>%
+  mutate(
+    across(where(is.numeric), .fns = ~format(.x, big.mark = ","))
+  )
+dollar_per_td_by_pos <- dollar_per_td_by_pos %>%
+  adorn_ns(position = "front", ns = formatNs)
+dollar_per_td_by_pos %>% kable(
+  format = "latex",
+  booktabs = TRUE
+) %>%
+  kable_paper("hover", full_width = T)
+View(dollar_per_td_by_pos)
 
 
