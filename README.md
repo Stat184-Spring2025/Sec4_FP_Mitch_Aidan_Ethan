@@ -17,6 +17,7 @@ In our repo we have files that need to be downloaded if someone wishes to run ou
 ## Data Sources and Acknowledgements
 
 https://www.nhl.com/stats/
+
 https://www.spotrac.com/nhl/
 
 ## Authors
