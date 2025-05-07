@@ -1,6 +1,6 @@
 ---
-title: "final_qmd_file"
-author: "Aidan, Ethan, and Mitchell Darling"
+title: "Rookie Contract Analysis"
+author: "Aidan McGrath, Ethan Martin, and Mitchell Darling"
 date: "5/7/2025"
 format: pdf
 ---
@@ -23,16 +23,36 @@ library(ggplot2)
 library(readxl)
 
 #importing data
-nhl_draft_2015 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2015.xlsx")
-nhl_draft_2016 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2016.xlsx")
-rookies_2015_to_2017 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2017.xlsx")
-rookies_2015_to_2018 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2018.xlsx")
-rookies_2015_to_2019 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2019.xlsx")
-rookies_2015_to_2020 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2015_to_2020.xlsx")
-rookies_2016_to_2018 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2018.xlsx")
-rookies_2016_to_2019 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2019.xlsx")
-rookies_2016_to_2020 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2020.xlsx")
-rookies_2016_to_2021 <- read_excel("C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies_2016_to_2021.xlsx")
+nhl_draft_2015 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2015.xlsx"
+  )
+nhl_draft_2016 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2016.xlsx"
+  )
+rookies_2015_to_2017 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2017.xlsx"
+  )
+rookies_2015_to_2018 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2018.xlsx"
+  )
+rookies_2015_to_2019 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2019.xlsx"
+  )
+rookies_2015_to_2020 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2020.xlsx"
+  )
+rookies_2016_to_2018 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2018.xlsx"
+  )
+rookies_2016_to_2019 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2019.xlsx"
+  )
+rookies_2016_to_2020 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2020.xlsx"
+  )
+rookies_2016_to_2021 <- read_excel(
+  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2021.xlsx"
+  )
 
 #filtering the data
 rookies2015to2017 <- nhl_draft_2015 %>%
@@ -142,28 +162,35 @@ all_rookie_stats <- bind_rows(
   mutate(Position = ifelse(Position == "D", "Defenseman", Position))
 
 #creates points per game graph
-ppg_graph <- ggplot(all_rookie_stats, aes(x = `P/GP`, y = `Average Salary of Next Contract`)) +
+ppg_graph <- ggplot(
+  all_rookie_stats, aes(x = `P/GP`, y = `Average Salary of Next Contract`)
+  ) +
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
-  scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
+  scale_y_continuous(labels = function(x) paste0(x / 1e6, " million")) +
+  ggtitle("Points/Game vs. Average Salary of Their Next Contract")
 
 #creates games played graph
-gp_graph <- ggplot(all_rookie_stats, aes(x = `GP`, y = `Average Salary of Next Contract`)) +
+gp_graph <- ggplot(all_rookie_stats, aes(
+  x = `GP`, y = `Average Salary of Next Contract`)
+  ) +
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
-  scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
+  scale_y_continuous(labels = function(x) paste0(x / 1e6, " million")) +
+  ggtitle("Games Played vs. Average Salary of Their Next Contract")
 ```
   The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
   
   The NHL player statistics were pulled from nhl.com using their export feature. Their website allows users to filter statistics for players drafted in certain drafts across specific seasons. They provide an export button to export the filtered statistics into an excel file. The contract data was taken from spotrac.com. There was no way to scrape the data directly using R because there was not a page that had all of the information I needed. I had to manually enter player's contract information into an excel file that had the first 50 players drafted in 2015 and 2016. I then had to wrangle the data to remove cases that had empty values. I was then able to merge the files together so every player had their correct statistics for their rookie contract. This resulted in each case being individual player.
   
-  This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned.
+  This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned. I also used tidyverse to create the following data visualizations.
   
 ```{R}
 #| label: NHL P/GP Graph
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-alt: Graph comparing points per game played to average salary of their next contract.
 ppg_graph
 ```
   This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
@@ -173,10 +200,11 @@ ppg_graph
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-alt: Graph comparing games played to average salary of their next contract.
 gp_graph
 ```
 
-  This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played.
+  This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played. This is an example of exploratory data analysis because the goal of these visualizations is to see if there are any relationships, not confirming a hypothesis.
 
 ## NBA Data
 
@@ -184,11 +212,7 @@ gp_graph
 ## NFL Data
 
 
-## Data Visualizations/Exploratory Data Analysis
-
-
-
-## FAIR/CARE
+## Comparing Sports
 
 
 ## Code Apendix
