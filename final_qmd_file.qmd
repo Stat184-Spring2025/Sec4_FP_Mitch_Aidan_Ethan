@@ -13,19 +13,127 @@ The goal of our project is to see if there is a correlation between an athleteâ€
 ```{r}
 #| label: nhl
 #| echo: false
+#| warning: false
 library(tidyverse)
 library(rvest)
 library(dplyr)
 library(ggplot2)
 
-drafted2015 <- rookieContractStats2015 %>%
-  dplyr::select(Player, Pos, `Next Contract Avg Sal`, `P/GP`, `+/-`, `TOI/GP`, GP, P, PIM) %>%
-  mutate(Pos = ifelse(Pos == "C", "Forward", Pos)) %>%
-  mutate(Pos = ifelse(Pos == "L", "Forward", Pos)) %>%
-  mutate(Pos = ifelse(Pos == "R", "Forward", Pos)) %>%
-  mutate(Pos = ifelse(Pos == "D", "Defenseman", Pos))
+rookies2015to2017 <- nhl_draft_2015 %>%
+  filter(`End of Rookie Contract` == 2017)
 
-drafted2015graph <- ggplot(drafted2015, aes(x = `P/GP`, y = `Next Contract Avg Sal`, color = Pos)) +
+rookies2015to2018 <- nhl_draft_2015 %>%
+  filter(`End of Rookie Contract` == 2018)
+
+rookies2015to2019 <- nhl_draft_2015 %>%
+  filter(`End of Rookie Contract` == 2019)
+
+rookies2015to2020 <- nhl_draft_2015 %>%
+  filter(`End of Rookie Contract` == 2020)
+
+rookies2016to2018 <- nhl_draft_2016 %>%
+  filter(`End of Rookie Contract` == 2018)
+
+rookies2016to2019 <- nhl_draft_2016 %>%
+  filter(`End of Rookie Contract` == 2019)
+
+rookies2016to2020 <- nhl_draft_2016 %>%
+  filter(`End of Rookie Contract` == 2020)
+
+rookies2016to2021 <- nhl_draft_2016 %>%
+  filter(`End of Rookie Contract` == 2021)
+
+rookieStats2015to2017 <- left_join(
+  x = rookies2015to2017,
+  y = rookies_2015_to_2017,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2015to2018 <- left_join(
+  x = rookies2015to2018,
+  y = rookies_2015_to_2018,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2015to2019 <- left_join(
+  x = rookies2015to2019,
+  y = rookies_2015_to_2019,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2015to2020 <- left_join(
+  x = rookies2015to2020,
+  y = rookies_2015_to_2020,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2016to2018 <- left_join(
+  x = rookies2016to2018,
+  y = rookies_2016_to_2018,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2016to2019 <- left_join(
+  x = rookies2016to2019,
+  y = rookies_2016_to_2019,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2016to2020 <- left_join(
+  x = rookies2016to2020,
+  y = rookies_2016_to_2020,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+rookieStats2016to2021 <- left_join(
+  x = rookies2016to2021,
+  y = rookies_2016_to_2021,
+  by = join_by(Player == Player)
+) %>%
+  drop_na() %>%
+  mutate(S = as.numeric(S))
+
+all_rookie_stats <- bind_rows(
+  rookieStats2015to2017,
+  rookieStats2015to2018,
+  rookieStats2015to2019,
+  rookieStats2015to2020,
+  rookieStats2016to2018,
+  rookieStats2016to2019,
+  rookieStats2016to2020,
+  rookieStats2016to2021
+) %>%
+  select(-Pos) %>%
+  mutate(Position = ifelse(Position == "C", "Forward", Position)) %>%
+  mutate(Position = ifelse(Position == "LW", "Forward", Position)) %>%
+  mutate(Position = ifelse(Position == "RW", "Forward", Position)) %>%
+  mutate(Position = ifelse(Position == "D", "Defenseman", Position))
+
+
+ppg_graph <- ggplot(all_rookie_stats, aes(x = `P/GP`, y = `Average Salary of Next Contract`)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "loess", se = FALSE) +
+  scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
+
+ppg_graph_years <- ggplot(all_rookie_stats, aes(x = `P/GP`, y = `Length of Next Contract`)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "loess", se = FALSE)
+
+ppg_graph_gp <- ggplot(all_rookie_stats, aes(x = `GP`, y = `Average Salary of Next Contract`)) +
   geom_point(size = 3) +
   geom_smooth(method = "loess", se = FALSE) +
   scale_y_continuous(labels = function(x) paste0(x / 1e6, " million"))
@@ -41,7 +149,9 @@ drafted2015graph <- ggplot(drafted2015, aes(x = `P/GP`, y = `Next Contract Avg S
 ```{r}
 #| message: false
 #| warning: false
-drafted2015graph
+ppg_graph
+ppg_graph_years
+ppg_graph_gp
 ```
 
 
