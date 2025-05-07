@@ -22,3 +22,4 @@ Be sure to list where you got any data used within the project. Be sure to ackno
 
 For questions pretaining to the research project contact the following authors:
 - Ethan Martin -- evm5766@psu.edu
+- Mitchell Darling -- mpd5779@psu.edu
