@@ -24,34 +24,34 @@ library(readxl)
 
 #importing data
 nhl_draft_2015 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2015.xlsx"
+  "/Users/ethanmartin/Downloads/nhl_draft_2015.xlsx"
   )
 nhl_draft_2016 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\nhl_draft_2016.xlsx"
+  "/Users/ethanmartin/Downloads/nhl_draft_2016.xlsx"
   )
 rookies_2015_to_2017 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2017.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2015_to_2017.xlsx"
   )
 rookies_2015_to_2018 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2018.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2015_to_2018.xlsx"
   )
 rookies_2015_to_2019 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2019.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2015_to_2019.xlsx"
   )
 rookies_2015_to_2020 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2015to2020.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2015_to_2020.xlsx"
   )
 rookies_2016_to_2018 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2018.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2016_to_2018.xlsx"
   )
 rookies_2016_to_2019 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2019.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2016_to_2019.xlsx"
   )
 rookies_2016_to_2020 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2020.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2016_to_2020.xlsx"
   )
 rookies_2016_to_2021 <- read_excel(
-  "C:\\Users\\mitch\\Desktop\\STAT 184\\Final Project\\rookies2016to2021.xlsx"
+  "/Users/ethanmartin/Downloads/rookies_2016_to_2021.xlsx"
   )
 
 #filtering the data
@@ -276,6 +276,8 @@ ggplot(
 ## NFL Data
 
 ```{r}
+#| warning: false
+#| include: false
 # Packages ----
 # install.packages("rvest")
 # install.packages("tidyverse")
@@ -755,16 +757,10 @@ The data is sourced from various sites, but the majority is from websites like P
 =======
 >>>>>>> 8cad3edd3f42067911792d593791559131f3b16e
 
-```{r}
-#| message: false
-#| warning: false
-ppg_graph
-ppg_graph_years
-ppg_graph_gp
-```
 
 ```{r}
 #| label: fig-contract_signing_scale
+#| echo: false
 #| warning: false
 #| fig-alt: Line graph visualizing the pay scale for the NFL draft and how players are likely to be paid according to their draft position. The x axis is the ordered draft pick and the y axis is the expected contract value for a player drafted at said position.
 #| fig-cap: Scale of Contract Value vs. Draft Pick
@@ -791,10 +787,11 @@ The graph above is a typical line graph of the rookie contract value of all play
 
 ```{r}
 #| label: fig-pos_vs_contract
-#| fig-cap: "Position vs. Contract Value by Position"
-#| fig-pos: "H"
+#| echo: false
+#| fig-alt: Scatterplot of contract value for current NFL players that signed a contract as of at least 2020 by position. The x axis identifies each individual position in the game and the y axis evaluates contract value in millions.
+#| fig-cap: Position vs. Contract Value by Position
+#| fig-pos: H
 #| fig-width: 5
-#| fig-alt: "Scatterplot of contract value for current NFL players that signed a contract as of at least 2020 by position. The x axis identifies each individual position in the game and the y axis evaluates contract value in millions."
 
 player_contracts <- load_contracts()
 player_contracts[[7]] <- as.integer(player_contracts[[7]])
@@ -813,10 +810,12 @@ This is a grouped scatter plot, grouped by player position. If the position name
 
 ```{r}
 #| label: fig-pick_vs_weighted_approx_value
-#| fig-cap: "Draft Pick vs. Weighted Approximate Value"
-#| fig-pos: "H"
+#| echo: false
+#| warning: false
+#| fig-alt: Scatterplot of draft pick vs. a player's weighted approximate value during their college career. The x axis is draft pick and the y axis is weighted approximate value. Weighted approximate value is a metric used to evaluate a player's overall value and performance during tenure in college
+#| fig-cap: Draft Pick vs. Weighted Approximate Value
+#| fig-pos: H
 #| fig-width: 5
-#| fig-alt: "Scatterplot of draft pick vs. a player's weighted approximate value during their college career. The x axis is draft pick and the y axis is weighted approximate value. Weighted approximate value is a metric used to evaluate a player's overall value and performance during tenure in college"
 
 pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) + 
   geom_point() + 
@@ -829,10 +828,12 @@ This visualization explores the affect of WAV (wighted approximate value). WAV i
 
 ```{r}
 #| label: fig-scores_vs_Salary
-#| fig-cap: "Number of Touchdowns vs. Salary by Position"
-#| fig-pos: "H"
+#| echo: false
+#| warning: false
+#| fig-alt: Scatterplot of total scores (in touchdowns) vs. the player's contract value. The x axis evaluates total touchdowns over a 5 season period. The y axis evaluates the player's contract value. The aesthetics correspond to the skill position point scorers being evaluated
+#| fig-cap: Number of Touchdowns vs. Salary by Position
 #| fig-height: 5
-#| fig-alt: "Scatterplot of total scores (in touchdowns) vs. the player's contract value. The x axis evaluates total touchdowns over a 5 season period. The y axis evaluates the player's contract value. The aesthetics correspond to the skill position point scorers being evaluated"
+#| fig-pos: H
 
 stats_salary <- bind_rows(
   list(total_rookie_stats_qb_salary, total_rookie_stats_rb_salary, total_rookie_stats_wr_salary)
@@ -847,14 +848,16 @@ stats_salary_plot
 ```
 Context for this graph, this is data that has been extensively filtered to match specific cases I wanted to isolate. Unlike other visualizations that utilized the entire set of data, I filtered these only to match players who have signed a contract extension sometime after their initial draft in 2020. In other words, these are players that make it through the jump to the professional level of the sport. So, due to these conditions (skill positions minus TE, drafted in 2020, and re-signed sometime before 2025) the sample size for this visualization is small, but should help in further analysis.
 
-This is a visualization that attempts to put the skill positions on a common, level playing field, that is the total amount of scores (touchdowns) they achieve. However, this "even playing field" is about as even and level as the Rocky Mountains, as not every skill position scores as often as the others do.
+This is a visualization that attempts to put the skill positions on a common, level playing field, that is the total amount of scores (touchdowns) they achieve. However, this "even playing field" is about as even and level as the Rocky Mountains, as not every skill position scores as often as the others do. But, there is still important information we can extract from this visualization. We can see that the successful QBs in this plot both score and are paid more than their offensive counterparts, both WRs and RBs.
 
 ```{r}
 #| label: tbl-dollar_per_score
-#| tbl-cap: "Dollar Per Score By Skill Position"
-#| tbl-pos: "H"
+#| echo: false
+#| warning: false
 #| html-table-processing: none
-#| tbl-alt: "Summary table showcasing the percentage distribution of the skill positions evaluated in the number of touchdowns vs salary by position graph. Percentages are split according to the column totals and we have added a column that averages the position's dollars earned per touchdown"
+#| tbl-alt: Summary table showcasing the percentage distribution of the skill positions evaluated in the number of touchdowns vs salary by position graph. Percentages are split according to the column totals and we have added a column that averages the position's dollars earned per touchdown
+#| tbl-cap: Dollar Per Score By Skill Position
+#| tbl-pos: H
 
 dollar_per_td_by_pos <- stats_salary %>%
   group_by(Pos) %>%
@@ -877,12 +880,20 @@ dollar_per_td_by_pos %>% kable(
   booktabs = TRUE
 ) %>%
   kable_paper("hover", full_width = T)
-dollar_per_td_by_pos
+#dollar_per_td_by_pos
 ```
-
+This is a summary table based upon the visualization above. Using the same sample size, we can look at the makeup of their salaries, total touchdowns, and the relation between them. QBs are scoring the vast majority of touchdowns, making up more than three quarters of the sample data. However, this table breeds a very important relation that is applicable across all point scorers, which is Dollars per Touchdown. QBs, on average, will make about 2 million dollars per touchdown they score, and WRs about 3 and a quarter million per score. But RBs get a little interesting. The running back position in the NFL has been a very controversial position in regards to payment. They are the most injury-prone, and have some of the lowest pay in the league for their troubles. Consulting the Position vs. Salary graph, we can see that they have some of the lowest median and mean pay for their position group. However, when evaluated along the same criteria I have been using, we can see that they will be paid a whopping 8.4 million per touchdown that they score. So we see here that RBs might not score the most often or get paid frequently, but when they score, it is apparent that it means a lot more in terms of monetary value.
 
 ## Comparing Sports
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
+  
+For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning from the draft position vs. contract graph proves the first point among what factors affect a player's contract value. The second, according to the position vs. contract grouped plot, that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
+
+
+
+
+
+After comparison between all three sports, we can identify that the one commonality is how they score. Whether its points per game or touchdowns, the main idea is if you score you get paid. As much as draft "stock" and positioning play into a player's initial rookie contract, their prolonged success (and consequently payment and contract value) is determined by how efficient they are at scoring.
 
 ## Code Apendix
 
