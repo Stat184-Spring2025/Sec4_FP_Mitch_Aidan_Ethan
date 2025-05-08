@@ -6,6 +6,7 @@ format: pdf
 ---
 
 ## Overview
+
 The goal of our project is to see if there is a relation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
 
 ## NHL Data
@@ -183,19 +184,21 @@ gp_graph <- ggplot(all_rookie_stats, aes(
     title = "Games Played vs. Average Salary of Their Next Contract"
   )
 ```
-  The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
-  
-  The NHL player statistics were pulled from nhl.com using their export feature. Their website allows users to filter statistics for players drafted in certain drafts across specific seasons. They provide an export button to export the filtered statistics into an excel file. The contract data was taken from spotrac.com. There was no way to scrape the data directly using R because there was not a page that had all of the information I needed. I had to manually enter player's contract information into an excel file that had the first 50 players drafted in 2015 and 2016. I then had to wrangle the data to remove cases that had empty values. I was then able to merge the files together so every player had their correct statistics for their rookie contract. This resulted in each case being individual player.
-  
-  This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned. I also used tidyverse to create the following data visualizations.
-  
+
+The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
+
+The NHL player statistics were pulled from nhl.com using their export feature. Their website allows users to filter statistics for players drafted in certain drafts across specific seasons. They provide an export button to export the filtered statistics into an excel file. The contract data was taken from spotrac.com. There was no way to scrape the data directly using R because there was not a page that had all of the information I needed. I had to manually enter player's contract information into an excel file that had the first 50 players drafted in 2015 and 2016. I then had to wrangle the data to remove cases that had empty values. I was then able to merge the files together so every player had their correct statistics for their rookie contract. This resulted in each case being individual player.
+
+This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned. I also used tidyverse to create the following data visualizations.
+
 ```{R}
 #| echo: false
 #| message: false
 #| warning: false
 ppg_graph
 ```
-  This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
+
+This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
 
 ```{R}
 #| echo: false
@@ -204,19 +207,25 @@ ppg_graph
 gp_graph
 ```
 
-  This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played. This is an example of exploratory data analysis because the goal of these visualizations is to see if there are any relationships, not confirming a hypothesis.
+This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played. This is an example of exploratory data analysis because the goal of these visualizations is to see if there are any relationships, not confirming a hypothesis.
 
 ## NBA Data
 
-## Three-Point Shooting vs Salary
+### Three-Point Shooting Over Time
 
-The NBA has been 
+Since the implementation of the 1979-1980 Season, NBA teams have been taking more threes every year. The graph below is the league average 3-pointers attempted per game for a team.
 
 ```{r}
+#| label: ThreeAttemptsPerYear
+#| echo: false
+#| warning: false
+#| eval: true
+
 library(rvest)
 library(tidyverse)
 library(dplyr)
 
+# Scrapes 2024-2025 regular season player stats from basketball reference
 LeagueStatsWebPage <- read_html(
   "https://www.basketball-reference.com/leagues/NBA_stats_per_game.html#stats-Regular-Season"
 ) %>% html_elements(css = "table") %>%
@@ -226,8 +235,6 @@ LeagueStatsRaw <- LeagueStatsWebPage[[1]]
 
 # Converts names of columns
 colnames(LeagueStatsRaw) <- c("Rank", "Season", "Lg", "Age", "Height", "Weight", "Games", "MPG", "FGM", "FGA", "ThreePM", "ThreePA", "FT", "FTA", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "FGPercent", "ThreePercent", "FTPercent", "Pace", "eFG%", "TOVPercent", "ORBPercent", "FT/FGA", "ORtg", "TSPercent")
-
-# Removes all but Year, 3PA, and 3P%
 
 # Function to convert Season to Year format
 convert_year <- function(year) {
@@ -241,7 +248,7 @@ convert_year <- function(year) {
   return(newYear)
 }
 
-# Removes all but Year, 3PA, and 3P% and removes leftover column name rows
+# Removes all but Year, 3PA, and 3P% and removes leftover column name rows. Also filters out years from before 1980 where there was no three point data.
 LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent") %>%
   filter(Season != "Season") %>%
   filter(ThreePercent != "Shooting") %>%
@@ -251,9 +258,11 @@ LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent"
   ) %>%
   filter(Season > 1979)
 
+# Makes char type data numeric
 LeagueStatsCleaned <- mutate(LeagueStatsCleaned, ThreePA = as.numeric(ThreePA))
 LeagueStatsCleaned <- mutate(LeagueStatsCleaned, Year = as.numeric(Year))
 
+# Graphs league average three point attempts per game
 ggplot(
   data = LeagueStatsCleaned,
   mapping = aes(
@@ -263,10 +272,167 @@ ggplot(
 ) + geom_line() +
   theme_bw() +
   labs(
+    title = "3-Point Attempts Over Time",
     x = 'Year',
-    y = 'Three Pointers Attempted Per Game'
+    y = 'Average Three Pointers Attempted Per Game'
   )
 
+```
+
+### Three-Point Percentage vs Salary
+
+With the exception of the center position, every player in the NBA is expected to shoot threes efficiently. You will find very few NBA players that are paid more than 20 million dollars per year that shoot less than 25% from three. The few that do are Power Forwards (PF) and Centers (C) who can traditionally create value from their size with rebounds and blocks.
+
+```{r}
+#| label: ThreePointPercentSalary
+#| echo: false
+#| warning: false
+#| eval: true
+
+library(rvest)
+library(tidyverse)
+library(dplyr)
+library(scales)
+
+
+#Takes the 2024-2025 players' salary information from basketball reference
+SalaryWebPage <- read_html(
+  "https://www.basketball-reference.com/contracts/players.html#player-contracts"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+SalaryRaw <- SalaryWebPage[[1]]
+
+# Renames the columns
+colnames(SalaryRaw) <- c(
+  "Rank", "Player", "Team", "Salary", "Salary1", "Salary2", "Salary3", "Salary4", "Salary5", "Guaranteed")
+
+# Removes undesired tables
+SalaryCleaned <- select(SalaryRaw, -"Salary1", -"Salary2", -"Salary3", -"Salary4", -"Salary5", -"Guaranteed") %>%
+  filter(Rank != "Rk") %>%
+  filter(Salary != "Salary")
+
+SalaryCleaned$Salary = as.numeric(gsub("[\\$,]", "", SalaryCleaned$Salary))
+
+#---------------------------------------------------------------------------
+
+# Takes the 2024-2025 players regular season per game stats from basketball reference
+StatsWebPage <- read_html(
+  "https://www.basketball-reference.com/leagues/NBA_2025_per_game.html#per_game_stats"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+StatsRaw <- StatsWebPage[[1]]
+
+# Drops awards table
+StatsCleaned <- select(StatsRaw, -"Awards")
+
+#---------------------------------------------------------------------------
+
+# Joins Stats and Salary tables; drops "2TM" and old teams for traded players
+Players <- inner_join(SalaryCleaned, StatsCleaned)
+
+# Graphs 
+ggplot(
+  data = Players,
+  mapping = aes(
+  x = `3P%`,
+  y = Salary,
+  color = `Pos`
+  )
+) + geom_point() +
+  scale_y_continuous(
+    labels = label_currency(),
+    n.breaks = 6
+  ) +
+  theme_bw() +
+  labs(
+    title = '3-Point Percent vs Salary',
+    x = 'Three-Point Percentage',
+    y = 'Salary (USD)'
+  )
+
+```
+
+### Rookie Production vs First Salary
+
+The graph below shows the relationship between the 2019-2020 rookie production (measured in PPG) and Salary in 2024-2025, which is the first year that most signed their first contract after their rookie contracts. Usually rookie contracts act as a sort of trial period that pay better every year for four years. Starting in their fifth year, rookies can sign a full contract that pays much more. This is a performance incentive for rookies.
+
+```{r}
+#| label: RookieProductionSalary
+#| echo: false
+#| warning: false
+#| eval: true
+
+library(rvest)
+library(tidyverse)
+library(dplyr)
+
+# Reads 2019-2020 rookie data from basketball reference
+RookiesWebPage <- read_html(
+  "https://www.basketball-reference.com/leagues/NBA_2020_rookies-season-stats.html#rookies"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+RookiesRaw <- RookiesWebPage[[1]]
+
+# Renames columns
+colnames(RookiesRaw) <- c( 
+  "Rank", "Player", "Debut", "Age", "EXP", "GP", "MP", "FG", "FGA", "ThreePM", "ThreePA", "TFTM", "TFTA", "TORB", "TTRB", "TAST", "STL", "TBLK", "TOV", "PF", "TPTS", "FGPercent", "ThreePercent", "FTPercent", "MPG", "PPG", "TRB", "APG", "SPG", "BPG"
+)
+
+# Removes all columns except Player, PPG, and ThreePercent
+RookiesCleaned <- select(RookiesRaw, "Player", "PPG", "ThreePercent") %>%
+  filter(PPG != "Per Game") %>%
+  filter(Player != "Player")
+
+#------------------------------------------------------------------------------
+
+#Takes the 2024-2025 players' salary information from basketball reference
+SalaryWebPage <- read_html(
+  "https://www.basketball-reference.com/contracts/players.html#player-contracts"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+SalaryRaw <- SalaryWebPage[[1]]
+
+#Renames the columns
+colnames(SalaryRaw) <- c(
+  "Rank", "Player", "Team", "Salary", "Salary1", "Salary2", "Salary3", "Salary4", "Salary5", "Guaranteed")
+
+SalaryCleaned2 <- select(SalaryRaw, "Player", "Salary") %>%
+  filter(Player != "Player") %>%
+  filter(Salary != "Salary")
+
+# Formats char type salary info as numeric without dollar sign or commas
+SalaryCleaned2$Salary = as.numeric(gsub("[\\$,]", "", SalaryCleaned2$Salary))
+
+#------------------------------------------------------------------------------
+
+# Joins SalaryCleaned2 and RookiesCleaned dataframes
+RookiesSalaryCleaned <- inner_join(SalaryCleaned2, RookiesCleaned)
+
+# Changes PPG from char type to numeric
+RookiesSalaryCleaned <- mutate(RookiesSalaryCleaned, PPG = as.numeric(PPG))
+
+# Graphs PPG of rookie year vs 2024-2025 salary
+ggplot(
+  data = RookiesSalaryCleaned,
+  mapping = aes(
+  x = PPG,
+  y = Salary
+  )
+) + geom_point() +
+  scale_y_continuous(
+    labels = label_currency(),
+    n.breaks = 6
+  ) +
+  theme_bw() +
+  labs(
+    title = "Rookie PPG vs First Contract Salary",
+    x = 'Points Per Game',
+    y = 'Salary (USD)'
+  )
 ```
 
 ## NFL Data
@@ -739,6 +905,7 @@ dollar_per_td_by_pos %>% kable(
 
 ```
 
+=======
 This section focuses on data from the NFL. This ranges from the draft data, to contract/salary information, to player statistics throughout the duration of the season. I aim to perform an EDA based approach on these datasets in order to identify what factors play into the value of a player's contract, whether that be draft pick positioning, college career stats, production in the league, or any other factor that becomes relevant when discussing a player's paycheck. Specifically, I will be focusing on data from the 2020 NFL Draft class. This gives me a 5-year period (seasons 2020-2024) to study and evaluate the performance of new players. In an attempt to isolate variables and factors that will play into how a player is payed, I am focusing my analysis to offensive players. Specifically what are called "Skill Position" players. These are offensive players that score touchdowns: Quarterback (QB), running back (RB), wide receiver (WR), and tight end (TE). However, I will be omitting the tight end position from the majority of analyses due to variations in data, as the tight end position's purpose isn't just to score points. They are often used as a power back, a blocker, and then also a receiver to catch passes, so due to the varied nature of this position, I won't be using it when evaluating scoring statistics.
 
 The NFL uses position abbreviations in order to simplify names and reduce space taken up, and so have I. So for those unaware of football argon, here are what each position abbreviation means:
@@ -746,6 +913,7 @@ The NFL uses position abbreviations in order to simplify names and reduce space 
 C -- Center, CB -- Corner Back (Often grouped with safeties as DB), ED -- Edge, FB -- Full Back, IDL -- Interior Defensive Lineman, K -- Kicker, LB -- Linebacker, LG -- Left Guard, LS -- Long Snapper, LT -- Left Tackle, P -- Punter, QB -- Quarterback, RB -- Running Back, RG -- Right Guard, RT -- Right Tackle, S -- Safety, TE -- Tight End, WR -- Wide Receiver.
 
 The data is sourced from various sites, but the majority is from websites like Pro Football Reference and Spotrac, two sites that prioritize accurate, free, and public records of anything NFL related. Draft stats, team stats, stat leaders, and any other statistic of the sort that pertains to NFL football can be found on these sites and are commonly cross referenced and used by professional sport analysts nationwide. I used Pro Football Reference for the 2020 NFL Draft order and the college career stats of the players selected in said draft year. Spotrac was used for contract information, mainly for salary extensions throughout the specified time period. I also used an r package called "nflreadr", which had more useful information about contract periods and player salary.
+
 
 ```{r}
 #| label: fig-contract_signing_scale
@@ -874,6 +1042,7 @@ dollar_per_td_by_pos %>% kable(
 ) %>%
   kable_paper("hover", full_width = T)
 ```
+
 This is a summary table based upon the visualization above (@fig-scores_vs_salary). Using the same sample size, we can look at the makeup of their salaries, total touchdowns, and the relation between them. QBs are scoring the vast majority of touchdowns, making up more than three quarters of the sample data. However, this table breeds a very important relation that is applicable across all point scorers, which is Dollars per Touchdown. QBs, on average, will make about 2 million dollars per touchdown they score, and WRs about 3 and a quarter million per score. But RBs get a little interesting. The running back position in the NFL has been a very controversial position in regards to payment. They are the most injury-prone, and have some of the lowest pay in the league for their troubles. Consulting the Position vs. Salary graph (@fig-pos_vs_contract), we can see that they have some of the lowest median and mean pay for their position group. However, when evaluated along the same criteria I have been using, we can see that they will be paid a whopping 8.4 million per touchdown that they score. So we see here that RBs might not score the most often or get paid frequently, but when they score, it is apparent that it means a lot more in terms of monetary value.
 
 ## Comparing Sports
@@ -900,6 +1069,7 @@ NHL | Spotrac.Com, www.spotrac.com/nhl. Accessed 8 May 2025.
 “2020 NFL Draft Listing.” Pro Football Reference, www.pro-football-reference.com/years/2020/draft.html. Accessed 7 May 2025. 
 
 “NFLREADR • Download NFLVERSE Data.” NFLreadr, nflreadr.nflverse.com/. Accessed 7 May 2025. 
+
 
 
 ## Code Apendix
