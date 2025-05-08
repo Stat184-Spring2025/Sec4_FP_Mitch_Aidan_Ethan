@@ -19,9 +19,12 @@ In our repo we have files that need to be downloaded if someone wishes to run ou
 NHL:
 - https://www.nhl.com/stats/
 - https://www.spotrac.com/nhl/
+NBA:
+- https://www.basketball-reference.com/
 
 ## Authors
 
 For questions pretaining to the research project contact the following authors:
 - Ethan Martin -- evm5766@psu.edu
 - Mitchell Darling -- mpd5779@psu.edu
+- Aidan McGrath -- ajm8567@psu.edu
