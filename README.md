@@ -23,6 +23,10 @@ NHL:
 NBA:
 - https://www.basketball-reference.com/
 
+NFL:
+- www.spotrac.com/nfl/contracts/extensions
+- www.pro-football-reference.com/years/2020/draft.html
+- nflreadr.nflverse.com
 ## Authors
 
 For questions pretaining to the research project contact the following authors:
