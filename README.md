@@ -19,7 +19,8 @@ In our repo we have files that need to be downloaded if someone wishes to run ou
 NHL:
 - https://www.nhl.com/stats/
 - https://www.spotrac.com/nhl/
-  NBA:
+
+NBA:
 - https://www.basketball-reference.com/
 
 ## Authors
