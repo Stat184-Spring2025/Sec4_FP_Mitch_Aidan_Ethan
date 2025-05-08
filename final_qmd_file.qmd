@@ -751,15 +751,6 @@ C -- Center, CB -- Corner Back (Often grouped with safeties as DB), ED -- Edge, 
 
 The data is sourced from various sites, but the majority is from websites like Pro Football Reference and Spotrac, two sites that prioritize accurate, free, and public records of anything NFL related. Draft stats, team stats, stat leaders, and any other statistic of the sort that pertains to NFL football can be found on these sites and are commonly cross referenced and used by professional sport analysts nationwide. I used Pro Football Reference for the 2020 NFL Draft order and the college career stats of the players selected in said draft year. Spotrac was used for contract information, mainly for salary extensions throughout the specified time period. I also used an r package called "nflreadr", which had more useful information about contract periods and player salary.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-## Data Visualizations/Exploratory Data Analysis
-=======
->>>>>>> 8cad3edd3f42067911792d593791559131f3b16e
-
-
-=======
->>>>>>> a212a1447768be7b988795c4a9f32515c1a036fc
 ```{r}
 #| label: fig-contract_signing_scale
 #| echo: false
@@ -882,7 +873,6 @@ dollar_per_td_by_pos %>% kable(
   booktabs = TRUE
 ) %>%
   kable_paper("hover", full_width = T)
-#dollar_per_td_by_pos
 ```
 This is a summary table based upon the visualization above. Using the same sample size, we can look at the makeup of their salaries, total touchdowns, and the relation between them. QBs are scoring the vast majority of touchdowns, making up more than three quarters of the sample data. However, this table breeds a very important relation that is applicable across all point scorers, which is Dollars per Touchdown. QBs, on average, will make about 2 million dollars per touchdown they score, and WRs about 3 and a quarter million per score. But RBs get a little interesting. The running back position in the NFL has been a very controversial position in regards to payment. They are the most injury-prone, and have some of the lowest pay in the league for their troubles. Consulting the Position vs. Salary graph, we can see that they have some of the lowest median and mean pay for their position group. However, when evaluated along the same criteria I have been using, we can see that they will be paid a whopping 8.4 million per touchdown that they score. So we see here that RBs might not score the most often or get paid frequently, but when they score, it is apparent that it means a lot more in terms of monetary value.
 
