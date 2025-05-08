@@ -905,15 +905,13 @@ dollar_per_td_by_pos %>% kable(
 
 ```
 
-=======
-This section focuses on data from the NFL. This ranges from the draft data, to contract/salary information, to player statistics throughout the duration of the season. I aim to perform an EDA based approach on these datasets in order to identify what factors play into the value of a player's contract, whether that be draft pick positioning, college career stats, production in the league, or any other factor that becomes relevant when discussing a player's paycheck. Specifically, I will be focusing on data from the 2020 NFL Draft class. This gives me a 5-year period (seasons 2020-2024) to study and evaluate the performance of new players. In an attempt to isolate variables and factors that will play into how a player is payed, I am focusing my analysis to offensive players. Specifically what are called "Skill Position" players. These are offensive players that score touchdowns: Quarterback (QB), running back (RB), wide receiver (WR), and tight end (TE). However, I will be omitting the tight end position from the majority of analyses due to variations in data, as the tight end position's purpose isn't just to score points. They are often used as a power back, a blocker, and then also a receiver to catch passes, so due to the varied nature of this position, I won't be using it when evaluating scoring statistics.
+======= This section focuses on data from the NFL. This ranges from the draft data, to contract/salary information, to player statistics throughout the duration of the season. I aim to perform an EDA based approach on these datasets in order to identify what factors play into the value of a player's contract, whether that be draft pick positioning, college career stats, production in the league, or any other factor that becomes relevant when discussing a player's paycheck. Specifically, I will be focusing on data from the 2020 NFL Draft class. This gives me a 5-year period (seasons 2020-2024) to study and evaluate the performance of new players. In an attempt to isolate variables and factors that will play into how a player is payed, I am focusing my analysis to offensive players. Specifically what are called "Skill Position" players. These are offensive players that score touchdowns: Quarterback (QB), running back (RB), wide receiver (WR), and tight end (TE). However, I will be omitting the tight end position from the majority of analyses due to variations in data, as the tight end position's purpose isn't just to score points. They are often used as a power back, a blocker, and then also a receiver to catch passes, so due to the varied nature of this position, I won't be using it when evaluating scoring statistics.
 
 The NFL uses position abbreviations in order to simplify names and reduce space taken up, and so have I. So for those unaware of football argon, here are what each position abbreviation means:
 
 C -- Center, CB -- Corner Back (Often grouped with safeties as DB), ED -- Edge, FB -- Full Back, IDL -- Interior Defensive Lineman, K -- Kicker, LB -- Linebacker, LG -- Left Guard, LS -- Long Snapper, LT -- Left Tackle, P -- Punter, QB -- Quarterback, RB -- Running Back, RG -- Right Guard, RT -- Right Tackle, S -- Safety, TE -- Tight End, WR -- Wide Receiver.
 
 The data is sourced from various sites, but the majority is from websites like Pro Football Reference and Spotrac, two sites that prioritize accurate, free, and public records of anything NFL related. Draft stats, team stats, stat leaders, and any other statistic of the sort that pertains to NFL football can be found on these sites and are commonly cross referenced and used by professional sport analysts nationwide. I used Pro Football Reference for the 2020 NFL Draft order and the college career stats of the players selected in said draft year. Spotrac was used for contract information, mainly for salary extensions throughout the specified time period. I also used an r package called "nflreadr", which had more useful information about contract periods and player salary.
-
 
 ```{r}
 #| label: fig-contract_signing_scale
@@ -941,6 +939,7 @@ draft_contract_scale <- ggplot(rookie_scale,
   labs(title = "Draft Position vs. Contract Value")
 draft_contract_scale
 ```
+
 The graph above is a typical line graph of the rookie contract value of all players drafted in the 2020 NFL draft. The draft is split into 7, 32 pick rounds, but this number isnt always firm due to forfeiture and compensatory picks. But the first and second round all experience a significant drop in salary value upon their conclusion, while the drop decreases steadily as the draft progresses. This graph has a few vertical lines to isolate the first, second, and third rounds. We can pick out from this graph that the NFL (and their teams) all prioritize and dump as much money as they can into the first round of the draft, as this is when the best players end up getting drafted. This is one of the few solid factors that are directly related to a player's contract value.
 
 ```{r}
@@ -965,6 +964,7 @@ pos_vs_contract <- ggplot(player_contracts,
   labs(title = "Player Position vs. Contract Value")
 pos_vs_contract
 ```
+
 This is a grouped scatter plot, grouped by player position, where each case is an individual player and their contract. If the position names at the bottom are still a little confusing, please refer to the key stated in the NFL section's introduction. Not much can be gained from this graph, or a visualization of any sort based upon this dataset due to its scattered and varied nature, however, we do see that the Quarterback position, by far, has the highest value associated with it. Which makes sense when we consider that the quarterback is the only player (aside from the center, who starts the play) who handles the football every single play. They also are the primary point scorers, as they throw the ball to the receivers (which counts as a score for both players, statistic-wise), and can also run the ball to score. Coming up next behind the QB position is the edge rushers, followed by wide receivers. Edge rushers value comes from their ability to pressure the quarterback and halt run plays, making them incredibly valuable on defense. As for the receivers, they bring the bag home in regards to how necessary they are for a high powered offense to score. They create threats down the field and open the play up, again, making them a highly sought after asset.
 
 ```{r}
@@ -984,6 +984,7 @@ pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) +
   labs(title = "Draft Pick vs. Weighted Approximate Value")
 pick_vs_wav
 ```
+
 This visualization explores the affect of WAV (wighted approximate value). WAV is a statistic used to evaluate a college football player's overall "value" or contribution to the team. This statistic varies across different positions and rarely is a determining factor in where and when a player gets drafted. It is solely a number that a draftee or college player is given that corresponds to their "seasonal value". Here we can see that the higher WAV players do tend to get drafted earlier, but that observation only holds true in the earlier rounds of the draft. After the third round (usually around pick 96) we can see that higher WAV does not relate to the position the draftee is taken. I have added a trend line to help visualize variations in this graph but it proves the point that WAV does not play a meaningful factor in the outcome of a player's draft spot.
 
 ```{r}
@@ -1007,6 +1008,7 @@ stats_salary_plot <- ggplot(data = stats_salary,
   labs(title = "Total Scores vs. Contract Value")
 stats_salary_plot
 ```
+
 Context for this graph: this is data that has been extensively filtered to match specific cases I wanted to isolate. Unlike other visualizations that utilized the entire set of data, I filtered these only to match players who have signed a contract extension sometime after their initial draft in 2020. In other words, these are players that make it through the jump to the professional level of the sport. So, due to these conditions (skill positions minus TE, drafted in 2020, and re-signed sometime before 2025) the sample size for this visualization is small, but provides solid cases that should help in further analysis.
 
 This is a visualization that attempts to put the skill positions on a common, level playing field, that is the total amount of scores (touchdowns) they achieve. However, this "even playing field" is about as even and level as the Rocky Mountains, as not every skill position scores as often as the others do. But, there is still important information we can extract from this visualization. We can see that the successful QBs in this plot both score and are paid more than their offensive counterparts, both WRs and RBs.
@@ -1047,14 +1049,15 @@ This is a summary table based upon the visualization above (@fig-scores_vs_salar
 
 ## Comparing Sports
 
-  All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
-  
+All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
 
-For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
+For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level.
 
-For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning from the draft position vs. contract graph proves the first point among what factors affect a player's contract value. The second, according to the position vs. contract grouped plot, that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
+For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning from the draft position vs. contract graph proves the first point among what factors affect a player's contract value. The second, according to the position vs. contract grouped plot, that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level.
 
 For the NHL, the main factor that impacted a player's salary was points per game. This makes sense because if a player is scoring or assisting a lot, they are valuable and teams will want to keep them. This makes the team willing to pay them more. Another factor that impacted a player's salary was games played. This also makes sense because if a coach is choosing to play someone, it is likely because they are good which means they get paid more.
+
+For the NBA, the main predictor of salary after a player's rookie contract is points per game (PPG). It is not required for players to average a lot of points for a rookie, which is usually around 15+ PPG, but every player who did meet that mark signed a near max contract (30+ million) this year. The data also suggests that scoring above 10 PPG as a rookie is a good way to make at least 10 million on your next deal.
 
 After comparison between all three sports, we can identify that the one commonality is how they score. Whether its points per game or touchdowns, the main idea is if you score you get paid. As much as draft "stock" and positioning play into a player's initial rookie contract, their prolonged success (and consequently payment and contract value) is determined by how efficient they are at scoring.
 
@@ -1062,15 +1065,13 @@ After comparison between all three sports, we can identify that the one commonal
 
 “Statistics.” NHL.Com, www.nhl.com/stats/. Accessed 7 May 2025.
 
-NHL | Spotrac.Com, www.spotrac.com/nhl. Accessed 8 May 2025. 
+NHL \| Spotrac.Com, www.spotrac.com/nhl. Accessed 8 May 2025.
 
-“NFL Contract Extensions.” Spotrac.Com, www.spotrac.com/nfl/contracts/extensions. Accessed 8 May 2025. 
+“NFL Contract Extensions.” Spotrac.Com, www.spotrac.com/nfl/contracts/extensions. Accessed 8 May 2025.
 
-“2020 NFL Draft Listing.” Pro Football Reference, www.pro-football-reference.com/years/2020/draft.html. Accessed 7 May 2025. 
+“2020 NFL Draft Listing.” Pro Football Reference, www.pro-football-reference.com/years/2020/draft.html. Accessed 7 May 2025.
 
-“NFLREADR • Download NFLVERSE Data.” NFLreadr, nflreadr.nflverse.com/. Accessed 7 May 2025. 
-
-
+“NFLREADR • Download NFLVERSE Data.” NFLreadr, nflreadr.nflverse.com/. Accessed 7 May 2025.
 
 ## Code Apendix
 
