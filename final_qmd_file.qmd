@@ -212,6 +212,67 @@ gp_graph
 
 ## NBA Data
 
+## Three-Point Shooting vs Salary
+
+The NBA has been 
+
+```{r}
+library(rvest)
+library(tidyverse)
+library(dplyr)
+
+LeagueStatsWebPage <- read_html(
+  "https://www.basketball-reference.com/leagues/NBA_stats_per_game.html#stats-Regular-Season"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+LeagueStatsRaw <- LeagueStatsWebPage[[1]]
+
+# Converts names of columns
+colnames(LeagueStatsRaw) <- c("Rank", "Season", "Lg", "Age", "Height", "Weight", "Games", "MPG", "FGM", "FGA", "ThreePM", "ThreePA", "FT", "FTA", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "FGPercent", "ThreePercent", "FTPercent", "Pace", "eFG%", "TOVPercent", "ORBPercent", "FT/FGA", "ORtg", "TSPercent")
+
+# Removes all but Year, 3PA, and 3P%
+
+# Function to convert Season to Year format
+convert_year <- function(year) {
+  yearEnd <- substr(year, 6, 7)
+  yearStart <- substr(year, 1, 2)
+  if (year == "1999-00") {
+    newYear <- paste("20", sep = "", yearEnd)
+  } else {
+    newYear <- paste(yearStart, sep = "", yearEnd)
+  }
+  return(newYear)
+}
+
+# Removes all but Year, 3PA, and 3P% and removes leftover column name rows
+LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent") %>%
+  filter(Season != "Season") %>%
+  filter(ThreePercent != "Shooting") %>%
+  rowwise() %>%
+  mutate(
+    Year = convert_year(Season)
+  ) %>%
+  filter(Season > 1979)
+
+LeagueStatsCleaned <- mutate(LeagueStatsCleaned, ThreePA = as.numeric(ThreePA))
+LeagueStatsCleaned <- mutate(LeagueStatsCleaned, Year = as.numeric(Year))
+
+ggplot(
+  data = LeagueStatsCleaned,
+  mapping = aes(
+  x = Year,
+  y = ThreePA
+  )
+) + geom_line() +
+  theme_bw() +
+  labs(
+    x = 'Year',
+    y = 'Three Pointers Attempted Per Game'
+  )
+
+```
+
 ## NFL Data
 
 ```{r}
