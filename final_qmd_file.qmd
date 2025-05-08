@@ -234,7 +234,7 @@ gp_graph
 # install.packages("knitr")
 # install.packages("kableExtra")
 # install.packages("ggpmisc")
-
+# install.packages("tinytex")
 library(nflreadr)
 library(rvest)
 library(tidyverse)
@@ -248,6 +248,7 @@ library(janitor)
 library(knitr)
 library(kableExtra)
 library(ggpmisc)
+library(tinytex)
 
 # Scraping ----
 # NFL signing and salary table 
