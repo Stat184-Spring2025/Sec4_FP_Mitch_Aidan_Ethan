@@ -5,14 +5,8 @@ date: "5/7/2025"
 format: pdf
 ---
 
-<<<<<<< HEAD
-## Overview/Introduction
-
-The goal of our project is to see if there is a correlation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
-=======
 ## Overview
 The goal of our project is to see if there is a relation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
->>>>>>> 7a878ab6e8cc96cc0a9e93b5ecc37eb9d467f2be
 
 ## NHL Data
 
@@ -217,6 +211,67 @@ gp_graph
   This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played. This is an example of exploratory data analysis because the goal of these visualizations is to see if there are any relationships, not confirming a hypothesis.
 
 ## NBA Data
+
+## Three-Point Shooting vs Salary
+
+The NBA has been 
+
+```{r}
+library(rvest)
+library(tidyverse)
+library(dplyr)
+
+LeagueStatsWebPage <- read_html(
+  "https://www.basketball-reference.com/leagues/NBA_stats_per_game.html#stats-Regular-Season"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+LeagueStatsRaw <- LeagueStatsWebPage[[1]]
+
+# Converts names of columns
+colnames(LeagueStatsRaw) <- c("Rank", "Season", "Lg", "Age", "Height", "Weight", "Games", "MPG", "FGM", "FGA", "ThreePM", "ThreePA", "FT", "FTA", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "FGPercent", "ThreePercent", "FTPercent", "Pace", "eFG%", "TOVPercent", "ORBPercent", "FT/FGA", "ORtg", "TSPercent")
+
+# Removes all but Year, 3PA, and 3P%
+
+# Function to convert Season to Year format
+convert_year <- function(year) {
+  yearEnd <- substr(year, 6, 7)
+  yearStart <- substr(year, 1, 2)
+  if (year == "1999-00") {
+    newYear <- paste("20", sep = "", yearEnd)
+  } else {
+    newYear <- paste(yearStart, sep = "", yearEnd)
+  }
+  return(newYear)
+}
+
+# Removes all but Year, 3PA, and 3P% and removes leftover column name rows
+LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent") %>%
+  filter(Season != "Season") %>%
+  filter(ThreePercent != "Shooting") %>%
+  rowwise() %>%
+  mutate(
+    Year = convert_year(Season)
+  ) %>%
+  filter(Season > 1979)
+
+LeagueStatsCleaned <- mutate(LeagueStatsCleaned, ThreePA = as.numeric(ThreePA))
+LeagueStatsCleaned <- mutate(LeagueStatsCleaned, Year = as.numeric(Year))
+
+ggplot(
+  data = LeagueStatsCleaned,
+  mapping = aes(
+  x = Year,
+  y = ThreePA
+  )
+) + geom_line() +
+  theme_bw() +
+  labs(
+    x = 'Year',
+    y = 'Three Pointers Attempted Per Game'
+  )
+
+```
 
 ## NFL Data
 
@@ -688,6 +743,7 @@ View(dollar_per_td_by_pos)
 
 ```
 
+<<<<<<< HEAD
 This section focuses on data from the NFL. This ranges from the draft data, to contract/salary information, to player statistics throughout the duration of the season. I aim to perform an EDA based approach on these datasets in order to identify what factors play into the value of a player's contract, whether that be draft pick positioning, college career stats, production in the league, or any other factor that becomes relevant when discussing a player's paycheck. Specifically, I will be focusing on data from the 2020 NFL Draft class. This gives me a 5-year period (seasons 2020-2024) to study and evaluate the performance of new players. In an attempt to isolate variables and factors that will play into how a player is payed, I am focusing my analysis to offensive players. Specifically what are called "Skill Position" players. These are offensive players that score touchdowns: Quarterback (QB), running back (RB), wide receiver (WR), and tight end (TE). However, I will be omitting the tight end position from the majority of analyses due to variations in data, as the tight end position's purpose isn't just to score points. They are often used as a power back, a blocker, and then also a receiver to catch passes, so due to the varied nature of this position, I won't be using it when evaluating scoring statistics.
 
 The NFL uses position abbreviations in order to simplify names and reduce space taken up, and so have I. So for those unaware of football argon, here are what each position abbreviation means:
@@ -698,6 +754,8 @@ The data is sourced from various sites, but the majority is from websites like P
 
 <<<<<<< HEAD
 ## Data Visualizations/Exploratory Data Analysis
+=======
+>>>>>>> 8cad3edd3f42067911792d593791559131f3b16e
 
 ```{r}
 #| message: false
@@ -812,11 +870,9 @@ dollar_per_td_by_pos %>% kable(
   kable_paper("hover", full_width = T)
 ```
 
-## FAIR/CARE
-=======
+
 ## Comparing Sports
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
->>>>>>> 7a878ab6e8cc96cc0a9e93b5ecc37eb9d467f2be
 
 ## Code Apendix
 
