@@ -190,7 +190,7 @@ gp_graph <- ggplot(all_rookie_stats, aes(
   This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned. I also used tidyverse to create the following data visualizations.
   
 ```{R}
-#| label: NHL P/GP Graph
+#| label: fig-NHL P/GP Graph
 #| echo: false
 #| message: false
 #| warning: false
@@ -200,7 +200,7 @@ ppg_graph
   This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
 
 ```{R}
-#| label: NHL GP Graph
+#| label: fig-NHL GP Graph
 #| echo: false
 #| message: false
 #| warning: false
