@@ -304,6 +304,7 @@ library(knitr)
 library(kableExtra)
 library(ggpmisc)
 library(tinytex)
+library(chromote)
 
 # Scraping ----
 # NFL signing and salary table 
