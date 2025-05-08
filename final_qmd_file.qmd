@@ -1047,9 +1047,12 @@ This is a summary table based upon the visualization above (@fig-scores_vs_salar
 ## Comparing Sports
 
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
-  
 
+<<<<<<< HEAD
 For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
+=======
+For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level.
+>>>>>>> 50a0479c80d133596cac7e9872870c936757d963
 
 For the NHL, the main factor that impacted a player's salary was points per game. This makes sense because if a player is scoring or assisting a lot, they are valuable and teams will want to keep them. This makes the team willing to pay them more. Another factor that impacted a player's salary was games played. This also makes sense because if a coach is choosing to play someone, it is likely because they are good which means they get paid more.
 
