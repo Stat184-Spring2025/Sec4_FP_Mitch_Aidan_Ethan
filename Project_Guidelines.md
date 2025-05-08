@@ -62,17 +62,17 @@ We present the guidelines as a checklist in this file. This means that your team
     - [X] Data visualizations should show a variety of your skills and geometries.
     - [ ] __Optional__: If your explorations and data make sense to do so, try creating a map.
     - [X] Data visualizations should be appropriately sized--not too small and not too big.
-    - [ ] Figures and Tables should have appropriate captions and appropriately cross-referenced in the body of your report.
+    - [X] Figures and Tables should have appropriate captions and appropriately cross-referenced in the body of your report.
     - [X] Your team must produce at least one table that is *not* a display of raw data or a listing of data cases or columns.
     - [X] Your team must produce at least one plot/graph.
     - [X] There should be narrative text helping readers to better understand what each visualization helps them to learn about the data and context.
   - [X] Your report should contain narrative text (beyond explaining tables and figures) that explains the overall data story or context and helps the reader make sense of what is going on. That is, Take the reader on a journey.
   - [ ] __Optional:__ For those who want to challenge themselves further, feel free to include a section on using other statistical methods such as hypothesis testing, regression, ANOVA, or machine learning--see Chapter 18 of the Data Computing eBook. Keep in mind that this will not grant your group any extra credit.
-  - [ ]  You should properly cite any work you reference (including data) according to your choice of citation style. We've included files for APA7 and MLA9 as part of this template. If you want to use a different citation style, you will need download the CSL file from the [Zotero Style Respository](https://www.zotero.org/styles/) and include it in your team's repo.
+  - [X]  You should properly cite any work you reference (including data) according to your choice of citation style. We've included files for APA7 and MLA9 as part of this template. If you want to use a different citation style, you will need download the CSL file from the [Zotero Style Respository](https://www.zotero.org/styles/) and include it in your team's repo.
     - __Fall Back Plan__ You can also put your citations as footnotes and make your own reference list at the end of your document.
 - [X] Use GitHub to share changes and edits; there should be multiple commits to your repo.
   - [X] Each team should update the included README file to match their project.
-  - [ ] Each team member must have at least two (2) commits in the repo's history.
+  - [X] Each team member must have at least two (2) commits in the repo's history.
   - [X] There should be a Main branch and at least one development ("dev") branch for the repo.
   - [X] There should be at must be at least one Pull Request that resulted in a successful merging of two branches.
   - [X] One team member should create the Pull Request while a *different* team member should review and complete the Pull Request.
@@ -82,8 +82,8 @@ We present the guidelines as a checklist in this file. This means that your team
   - __Possible Style Guides:__ There are several different coding Style Guides you can follow; here are a few. [The BOAST Style Guide](https://educationshinyappteam.github.io/Style_Guide/coding.html), [The Tidyverse Style Guide](https://style.tidyverse.org/), [Google's R Style Guide](https://google.github.io/styleguide/Rguide.html)
 - [X] Sign up for your Work-in-Progress Presentation
 - [X] Complete your Work-in-Progress Presentation (details below)
-- [ ] Finalize your work and submit your report as a __PDF__ to the appropriate submission portal in Canvas by the deadline.
-  - [ ] As a comment on your submission, include a link to your team's project repo.
+- [X] Finalize your work and submit your report as a __PDF__ to the appropriate submission portal in Canvas by the deadline.
+  - [X] As a comment on your submission, include a link to your team's project repo.
 - [ ] Each team member must complete their Peer & Self Evaluations for working together on this project. This will be an assignment in MyOpenMath and needs to be completed by the deadline.
 
 ## Work-in-Progress Presentations
