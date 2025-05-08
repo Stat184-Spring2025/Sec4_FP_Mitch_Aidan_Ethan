@@ -741,7 +741,6 @@ dollar_per_td_by_pos %>% kable(
 
 ```
 
-<<<<<<< HEAD
 This section focuses on data from the NFL. This ranges from the draft data, to contract/salary information, to player statistics throughout the duration of the season. I aim to perform an EDA based approach on these datasets in order to identify what factors play into the value of a player's contract, whether that be draft pick positioning, college career stats, production in the league, or any other factor that becomes relevant when discussing a player's paycheck. Specifically, I will be focusing on data from the 2020 NFL Draft class. This gives me a 5-year period (seasons 2020-2024) to study and evaluate the performance of new players. In an attempt to isolate variables and factors that will play into how a player is payed, I am focusing my analysis to offensive players. Specifically what are called "Skill Position" players. These are offensive players that score touchdowns: Quarterback (QB), running back (RB), wide receiver (WR), and tight end (TE). However, I will be omitting the tight end position from the majority of analyses due to variations in data, as the tight end position's purpose isn't just to score points. They are often used as a power back, a blocker, and then also a receiver to catch passes, so due to the varied nature of this position, I won't be using it when evaluating scoring statistics.
 
 The NFL uses position abbreviations in order to simplify names and reduce space taken up, and so have I. So for those unaware of football argon, here are what each position abbreviation means:
@@ -749,19 +748,6 @@ The NFL uses position abbreviations in order to simplify names and reduce space 
 C -- Center, CB -- Corner Back (Often grouped with safeties as DB), ED -- Edge, FB -- Full Back, IDL -- Interior Defensive Lineman, K -- Kicker, LB -- Linebacker, LG -- Left Guard, LS -- Long Snapper, LT -- Left Tackle, P -- Punter, QB -- Quarterback, RB -- Running Back, RG -- Right Guard, RT -- Right Tackle, S -- Safety, TE -- Tight End, WR -- Wide Receiver.
 
 The data is sourced from various sites, but the majority is from websites like Pro Football Reference and Spotrac, two sites that prioritize accurate, free, and public records of anything NFL related. Draft stats, team stats, stat leaders, and any other statistic of the sort that pertains to NFL football can be found on these sites and are commonly cross referenced and used by professional sport analysts nationwide. I used Pro Football Reference for the 2020 NFL Draft order and the college career stats of the players selected in said draft year. Spotrac was used for contract information, mainly for salary extensions throughout the specified time period. I also used an r package called "nflreadr", which had more useful information about contract periods and player salary.
-
-<<<<<<< HEAD
-## Data Visualizations/Exploratory Data Analysis
-=======
->>>>>>> 8cad3edd3f42067911792d593791559131f3b16e
-
-```{r}
-#| message: false
-#| warning: false
-ppg_graph
-ppg_graph_years
-ppg_graph_gp
-```
 
 ```{r}
 #| label: fig-contract_signing_scale
