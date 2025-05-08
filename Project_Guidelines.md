@@ -34,54 +34,54 @@ This project has several key dates that you need to be aware of.
 
 We present the guidelines as a checklist in this file. This means that your team can edit this file and check items off the list by placing an x inside of the square brackets at the start of each item (i.e., [x]). This will help your team keep track of what you've completed and what you have left to do.
 
-- [ ] Read through the Project Guidelines.
-- [ ] Find 1 or 2 other individuals from the same section of Stat 184 who you want to work with and form a team. (We will help you form teams if you do not already have one by the team finalization date for your section.)
-- [ ] Create a repo using this template repo. Name your repo `Sec#_FP_Name1_Name2_Name3` where `Sec#` is your section of Stat184 (i.e., `Sec1`, `Sec2`, `Sec3`, or `Sec4`) and `Name#` is replaced with the names of each team member.
-  - [ ] The owner of the repo should be `Stat184-Spring2025`. 
-- [ ] Make sure that each team member has access to the repo.
-- [ ] Come up with a topic and set of research questions your team will explore.
-- [ ] Make a plan for your work. We suggested putting together your work plan ASAP.
-- [ ] Locate appropriate data sources for your project.
-  - [ ] Your main data source may __not__ be one that we used in class. If you are interested in using data found in an R package, please consult with your instructor first.
-  - [ ] Supplementary data sources may come from anywhere.
-- [ ] Read in your data and perform any necessary data tidying, wrangling, and cleaning.
-- [ ] Conduct Exploratory Data Analysis.
-- [ ] Prepare a reproducible report.
-  - [ ] Use a QMD file; the output type is PDF.
-  - [ ] The report should be well organized with section headings.
-  - [ ] Code should __only__ be found in a Code Appendix at the end for a PDF, not in the body of your report.
+- [X] Read through the Project Guidelines.
+- [X] Find 1 or 2 other individuals from the same section of Stat 184 who you want to work with and form a team. (We will help you form teams if you do not already have one by the team finalization date for your section.)
+- [X] Create a repo using this template repo. Name your repo `Sec#_FP_Name1_Name2_Name3` where `Sec#` is your section of Stat184 (i.e., `Sec1`, `Sec2`, `Sec3`, or `Sec4`) and `Name#` is replaced with the names of each team member.
+  - [X] The owner of the repo should be `Stat184-Spring2025`. 
+- [X] Make sure that each team member has access to the repo.
+- [X] Come up with a topic and set of research questions your team will explore.
+- [X] Make a plan for your work. We suggested putting together your work plan ASAP.
+- [X] Locate appropriate data sources for your project.
+  - [X] Your main data source may __not__ be one that we used in class. If you are interested in using data found in an R package, please consult with your instructor first.
+  - [X] Supplementary data sources may come from anywhere.
+- [X] Read in your data and perform any necessary data tidying, wrangling, and cleaning.
+- [X] Conduct Exploratory Data Analysis.
+- [X] Prepare a reproducible report.
+  - [X] Use a QMD file; the output type is PDF.
+  - [X] The report should be well organized with section headings.
+  - [X] Code should __only__ be found in a Code Appendix at the end for a PDF, not in the body of your report.
     - __TIP!__ The following code chunk can be added to a QMD file and will automatically build a section of code.
 ````
       ```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
       ```
 ````
-  - [ ] Describe the provenance of your data. That is, where did you get the data, who collected the data, for what purpose, who/what make up the cases.
-  - [ ] Explain how your data meet the FAIR and/or CARE Principles.
-  - [ ] Describe what attributes you'll focus your analysis on (mention if they are part of your data sets or if you created them out of your data sets).
-  - [ ] Create multiple data visualizations (tables and figures) that assist both the team and readers in understanding the data.
-    - [ ] Data visualizations should show a variety of your skills and geometries.
+  - [X] Describe the provenance of your data. That is, where did you get the data, who collected the data, for what purpose, who/what make up the cases.
+  - [X] Explain how your data meet the FAIR and/or CARE Principles.
+  - [X] Describe what attributes you'll focus your analysis on (mention if they are part of your data sets or if you created them out of your data sets).
+  - [X] Create multiple data visualizations (tables and figures) that assist both the team and readers in understanding the data.
+    - [X] Data visualizations should show a variety of your skills and geometries.
     - [ ] __Optional__: If your explorations and data make sense to do so, try creating a map.
-    - [ ] Data visualizations should be appropriately sized--not too small and not too big.
+    - [X] Data visualizations should be appropriately sized--not too small and not too big.
     - [ ] Figures and Tables should have appropriate captions and appropriately cross-referenced in the body of your report.
-    - [ ] Your team must produce at least one table that is *not* a display of raw data or a listing of data cases or columns.
-    - [ ] Your team must produce at least one plot/graph.
-    - [ ] There should be narrative text helping readers to better understand what each visualization helps them to learn about the data and context.
-  - [ ] Your report should contain narrative text (beyond explaining tables and figures) that explains the overall data story or context and helps the reader make sense of what is going on. That is, Take the reader on a journey.
+    - [X] Your team must produce at least one table that is *not* a display of raw data or a listing of data cases or columns.
+    - [X] Your team must produce at least one plot/graph.
+    - [X] There should be narrative text helping readers to better understand what each visualization helps them to learn about the data and context.
+  - [X] Your report should contain narrative text (beyond explaining tables and figures) that explains the overall data story or context and helps the reader make sense of what is going on. That is, Take the reader on a journey.
   - [ ] __Optional:__ For those who want to challenge themselves further, feel free to include a section on using other statistical methods such as hypothesis testing, regression, ANOVA, or machine learning--see Chapter 18 of the Data Computing eBook. Keep in mind that this will not grant your group any extra credit.
   - [ ]  You should properly cite any work you reference (including data) according to your choice of citation style. We've included files for APA7 and MLA9 as part of this template. If you want to use a different citation style, you will need download the CSL file from the [Zotero Style Respository](https://www.zotero.org/styles/) and include it in your team's repo.
     - __Fall Back Plan__ You can also put your citations as footnotes and make your own reference list at the end of your document.
-- [ ] Use GitHub to share changes and edits; there should be multiple commits to your repo.
-  - [ ] Each team should update the included README file to match their project.
+- [X] Use GitHub to share changes and edits; there should be multiple commits to your repo.
+  - [X] Each team should update the included README file to match their project.
   - [ ] Each team member must have at least two (2) commits in the repo's history.
-  - [ ] There should be a Main branch and at least one development ("dev") branch for the repo.
-  - [ ] There should be at must be at least one Pull Request that resulted in a successful merging of two branches.
-  - [ ] One team member should create the Pull Request while a *different* team member should review and complete the Pull Request.
-  - [ ] Ensure that your instructor has access to your repo.
+  - [X] There should be a Main branch and at least one development ("dev") branch for the repo.
+  - [X] There should be at must be at least one Pull Request that resulted in a successful merging of two branches.
+  - [X] One team member should create the Pull Request while a *different* team member should review and complete the Pull Request.
+  - [X] Ensure that your instructor has access to your repo.
   - [ ] __Optional:__ Use the repo's Issues system to track and address any problems, core tasks, etc. 
-- [ ] All code should be written according to a Style Guide of your choice. List this Style Guide as a code comment in your first code chunk.
+- [X] All code should be written according to a Style Guide of your choice. List this Style Guide as a code comment in your first code chunk.
   - __Possible Style Guides:__ There are several different coding Style Guides you can follow; here are a few. [The BOAST Style Guide](https://educationshinyappteam.github.io/Style_Guide/coding.html), [The Tidyverse Style Guide](https://style.tidyverse.org/), [Google's R Style Guide](https://google.github.io/styleguide/Rguide.html)
-- [ ] Sign up for your Work-in-Progress Presentation
-- [ ] Complete your Work-in-Progress Presentation (details below)
+- [X] Sign up for your Work-in-Progress Presentation
+- [X] Complete your Work-in-Progress Presentation (details below)
 - [ ] Finalize your work and submit your report as a __PDF__ to the appropriate submission portal in Canvas by the deadline.
   - [ ] As a comment on your submission, include a link to your team's project repo.
 - [ ] Each team member must complete their Peer & Self Evaluations for working together on this project. This will be an assignment in MyOpenMath and needs to be completed by the deadline.
