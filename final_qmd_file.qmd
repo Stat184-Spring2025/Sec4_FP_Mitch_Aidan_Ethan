@@ -258,7 +258,6 @@ LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent"
 LeagueStatsCleaned <- mutate(LeagueStatsCleaned, ThreePA = as.numeric(ThreePA))
 LeagueStatsCleaned <- mutate(LeagueStatsCleaned, Year = as.numeric(Year))
 
-
 ggplot(
   data = LeagueStatsCleaned,
   mapping = aes(
