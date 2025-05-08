@@ -905,7 +905,6 @@ dollar_per_td_by_pos %>% kable(
 
 ```
 
-=======
 This section focuses on data from the NFL. This ranges from the draft data, to contract/salary information, to player statistics throughout the duration of the season. I aim to perform an EDA based approach on these datasets in order to identify what factors play into the value of a player's contract, whether that be draft pick positioning, college career stats, production in the league, or any other factor that becomes relevant when discussing a player's paycheck. Specifically, I will be focusing on data from the 2020 NFL Draft class. This gives me a 5-year period (seasons 2020-2024) to study and evaluate the performance of new players. In an attempt to isolate variables and factors that will play into how a player is payed, I am focusing my analysis to offensive players. Specifically what are called "Skill Position" players. These are offensive players that score touchdowns: Quarterback (QB), running back (RB), wide receiver (WR), and tight end (TE). However, I will be omitting the tight end position from the majority of analyses due to variations in data, as the tight end position's purpose isn't just to score points. They are often used as a power back, a blocker, and then also a receiver to catch passes, so due to the varied nature of this position, I won't be using it when evaluating scoring statistics.
 
 The NFL uses position abbreviations in order to simplify names and reduce space taken up, and so have I. So for those unaware of football argon, here are what each position abbreviation means:
@@ -1048,11 +1047,8 @@ This is a summary table based upon the visualization above (@fig-scores_vs_salar
 ## Comparing Sports
 
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
-  
 
-For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
-
-For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning from the draft position vs. contract graph proves the first point among what factors affect a player's contract value. The second, according to the position vs. contract grouped plot, that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
+For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level.
 
 For the NHL, the main factor that impacted a player's salary was points per game. This makes sense because if a player is scoring or assisting a lot, they are valuable and teams will want to keep them. This makes the team willing to pay them more. Another factor that impacted a player's salary was games played. This also makes sense because if a coach is choosing to play someone, it is likely because they are good which means they get paid more.
 
