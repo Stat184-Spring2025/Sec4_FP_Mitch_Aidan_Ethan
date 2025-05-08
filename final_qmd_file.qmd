@@ -900,6 +900,13 @@ After comparison between all three sports, we can identify that the one commonal
 
 NHL | Spotrac.Com, www.spotrac.com/nhl. Accessed 8 May 2025. 
 
+“NFL Contract Extensions.” Spotrac.Com, www.spotrac.com/nfl/contracts/extensions. Accessed 8 May 2025. 
+
+“2020 NFL Draft Listing.” Pro Football Reference, www.pro-football-reference.com/years/2020/draft.html. Accessed 7 May 2025. 
+
+“NFLREADR • Download NFLVERSE Data.” NFLreadr, nflreadr.nflverse.com/. Accessed 7 May 2025. 
+
+
 ## Code Apendix
 
 ```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
