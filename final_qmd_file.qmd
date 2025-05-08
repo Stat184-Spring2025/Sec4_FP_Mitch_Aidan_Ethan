@@ -773,7 +773,8 @@ draft_contract_scale <- ggplot(rookie_scale,
   scale_x_continuous(breaks = seq(0, 255, by = 32)) + 
   geom_vline(xintercept = 32, color = "orange", linewidth = 1, alpha = 0.4) +
   geom_vline(xintercept = 64, color = "orange", linewidth = 1, alpha = 0.4) +
-  geom_vline(xintercept = 106, color = "orange", linewidth = 1, alpha = 0.4)
+  geom_vline(xintercept = 106, color = "orange", linewidth = 1, alpha = 0.4) +
+  labs(title = "Draft Position vs. Contract Value")
 draft_contract_scale
 ```
 The graph above is a typical line graph of the rookie contract value of all players drafted in the 2020 NFL draft. The draft is split into 7, 32 pick rounds, but this number isnt always firm due to forfeiture and compensatory picks. But the first and second round all experience a significant drop in salary value upon their conclusion, while the drop decreases steadily as the draft progresses. This graph has a few vertical lines to isolate the first, second, and third rounds. We can pick out from this graph that the NFL (and their teams) all prioritize and dump as much money as they can into the first round of the draft, as this is when the best players end up getting drafted. This is one of the few solid factors that are directly related to a player's contract value.
@@ -796,10 +797,11 @@ pos_vs_contract <- ggplot(player_contracts,
   geom_point() +
   xlab("Player Position") +
   ylab("Contract Value (in millions)") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+  labs(title = "Player Position vs. Contract Value")
 pos_vs_contract
 ```
-This is a grouped scatter plot, grouped by player position. If the position names at the bottom are still a little confusing, please refer to the key stated in the NFL section's introduction. Not much can be gained from this graph, or a visualization of any sort based upon this dataset due to its scattered and varied nature, however, we do see that the Quarterback position, by far, has the highest value associated with it. Which makes sense when we consider that the quarterback is the only player (aside from the center, who starts the play) who handles the football every single play. They also are the primary point scorers, as they throw the ball to the receivers (which counts as a score for both players, statistic-wise), and can also run the ball to score. Coming up next behind the QB position is the edge rushers, followed by wide receivers. Edge rushers value comes from their ability to pressure the quarterback and halt run plays, making them incredibly valuable on defense. As for the receivers, they bring the bag home in regards to how necessary they are for a high powered offense to score. They create threats down the field and open the play up, again, making them a highly sought after asset.
+This is a grouped scatter plot, grouped by player position, where each case is an individual player and their contract. If the position names at the bottom are still a little confusing, please refer to the key stated in the NFL section's introduction. Not much can be gained from this graph, or a visualization of any sort based upon this dataset due to its scattered and varied nature, however, we do see that the Quarterback position, by far, has the highest value associated with it. Which makes sense when we consider that the quarterback is the only player (aside from the center, who starts the play) who handles the football every single play. They also are the primary point scorers, as they throw the ball to the receivers (which counts as a score for both players, statistic-wise), and can also run the ball to score. Coming up next behind the QB position is the edge rushers, followed by wide receivers. Edge rushers value comes from their ability to pressure the quarterback and halt run plays, making them incredibly valuable on defense. As for the receivers, they bring the bag home in regards to how necessary they are for a high powered offense to score. They create threats down the field and open the play up, again, making them a highly sought after asset.
 
 ```{r}
 #| label: fig-pick_vs_weighted_approx_value
@@ -814,13 +816,14 @@ pick_vs_wav <- ggplot(data = college_rookie_stats, aes(x = Pick, y = wAV)) +
   geom_point() + 
   geom_smooth() +
   labs(x = "Draft Pick", y = "Weighted Approximate Value") +
-  scale_x_continuous(breaks = seq(0, 257, by = 32))
+  scale_x_continuous(breaks = seq(0, 257, by = 32)) +
+  labs(title = "Draft Pick vs. Weighted Approximate Value")
 pick_vs_wav
 ```
 This visualization explores the affect of WAV (wighted approximate value). WAV is a statistic used to evaluate a college football player's overall "value" or contribution to the team. This statistic varies across different positions and rarely is a determining factor in where and when a player gets drafted. It is solely a number that a draftee or college player is given that corresponds to their "seasonal value". Here we can see that the higher WAV players do tend to get drafted earlier, but that observation only holds true in the earlier rounds of the draft. After the third round (usually around pick 96) we can see that higher WAV does not relate to the position the draftee is taken. I have added a trend line to help visualize variations in this graph but it proves the point that WAV does not play a meaningful factor in the outcome of a player's draft spot.
 
 ```{r}
-#| label: fig-scores_vs_Salary
+#| label: fig-scores_vs_salary
 #| echo: false
 #| warning: false
 #| fig-alt: Scatterplot of total scores (in touchdowns) vs. the player's contract value. The x axis evaluates total touchdowns over a 5 season period. The y axis evaluates the player's contract value. The aesthetics correspond to the skill position point scorers being evaluated
@@ -836,10 +839,11 @@ stats_salary_plot <- ggplot(data = stats_salary,
   geom_point(size = 6) +
   labs(x = "Total Touchdowns", y = "Next Contract Value ($)") + 
   coord_cartesian(ylim = c(0, 300000000)) +
-  scale_y_continuous(labels = marks_no_sci)
+  scale_y_continuous(labels = marks_no_sci) +
+  labs(title = "Total Scores vs. Contract Value")
 stats_salary_plot
 ```
-Context for this graph, this is data that has been extensively filtered to match specific cases I wanted to isolate. Unlike other visualizations that utilized the entire set of data, I filtered these only to match players who have signed a contract extension sometime after their initial draft in 2020. In other words, these are players that make it through the jump to the professional level of the sport. So, due to these conditions (skill positions minus TE, drafted in 2020, and re-signed sometime before 2025) the sample size for this visualization is small, but should help in further analysis.
+Context for this graph: this is data that has been extensively filtered to match specific cases I wanted to isolate. Unlike other visualizations that utilized the entire set of data, I filtered these only to match players who have signed a contract extension sometime after their initial draft in 2020. In other words, these are players that make it through the jump to the professional level of the sport. So, due to these conditions (skill positions minus TE, drafted in 2020, and re-signed sometime before 2025) the sample size for this visualization is small, but provides solid cases that should help in further analysis.
 
 This is a visualization that attempts to put the skill positions on a common, level playing field, that is the total amount of scores (touchdowns) they achieve. However, this "even playing field" is about as even and level as the Rocky Mountains, as not every skill position scores as often as the others do. But, there is still important information we can extract from this visualization. We can see that the successful QBs in this plot both score and are paid more than their offensive counterparts, both WRs and RBs.
 
@@ -874,16 +878,12 @@ dollar_per_td_by_pos %>% kable(
 ) %>%
   kable_paper("hover", full_width = T)
 ```
-This is a summary table based upon the visualization above. Using the same sample size, we can look at the makeup of their salaries, total touchdowns, and the relation between them. QBs are scoring the vast majority of touchdowns, making up more than three quarters of the sample data. However, this table breeds a very important relation that is applicable across all point scorers, which is Dollars per Touchdown. QBs, on average, will make about 2 million dollars per touchdown they score, and WRs about 3 and a quarter million per score. But RBs get a little interesting. The running back position in the NFL has been a very controversial position in regards to payment. They are the most injury-prone, and have some of the lowest pay in the league for their troubles. Consulting the Position vs. Salary graph, we can see that they have some of the lowest median and mean pay for their position group. However, when evaluated along the same criteria I have been using, we can see that they will be paid a whopping 8.4 million per touchdown that they score. So we see here that RBs might not score the most often or get paid frequently, but when they score, it is apparent that it means a lot more in terms of monetary value.
+This is a summary table based upon the visualization above (@fig-scores_vs_salary). Using the same sample size, we can look at the makeup of their salaries, total touchdowns, and the relation between them. QBs are scoring the vast majority of touchdowns, making up more than three quarters of the sample data. However, this table breeds a very important relation that is applicable across all point scorers, which is Dollars per Touchdown. QBs, on average, will make about 2 million dollars per touchdown they score, and WRs about 3 and a quarter million per score. But RBs get a little interesting. The running back position in the NFL has been a very controversial position in regards to payment. They are the most injury-prone, and have some of the lowest pay in the league for their troubles. Consulting the Position vs. Salary graph (@fig-pos_vs_contract), we can see that they have some of the lowest median and mean pay for their position group. However, when evaluated along the same criteria I have been using, we can see that they will be paid a whopping 8.4 million per touchdown that they score. So we see here that RBs might not score the most often or get paid frequently, but when they score, it is apparent that it means a lot more in terms of monetary value.
 
 ## Comparing Sports
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
   
-For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning from the draft position vs. contract graph proves the first point among what factors affect a player's contract value. The second, according to the position vs. contract grouped plot, that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
-
-
-
-
+For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning (@fig-contract_signing_scale) proves the first point among what factors affect a player's contract value. The second, according to player position (@fig-pos_vs_contract), that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
 
 After comparison between all three sports, we can identify that the one commonality is how they score. Whether its points per game or touchdowns, the main idea is if you score you get paid. As much as draft "stock" and positioning play into a player's initial rookie contract, their prolonged success (and consequently payment and contract value) is determined by how efficient they are at scoring.
 
