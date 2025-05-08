@@ -752,11 +752,14 @@ C -- Center, CB -- Corner Back (Often grouped with safeties as DB), ED -- Edge, 
 The data is sourced from various sites, but the majority is from websites like Pro Football Reference and Spotrac, two sites that prioritize accurate, free, and public records of anything NFL related. Draft stats, team stats, stat leaders, and any other statistic of the sort that pertains to NFL football can be found on these sites and are commonly cross referenced and used by professional sport analysts nationwide. I used Pro Football Reference for the 2020 NFL Draft order and the college career stats of the players selected in said draft year. Spotrac was used for contract information, mainly for salary extensions throughout the specified time period. I also used an r package called "nflreadr", which had more useful information about contract periods and player salary.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## Data Visualizations/Exploratory Data Analysis
 =======
 >>>>>>> 8cad3edd3f42067911792d593791559131f3b16e
 
 
+=======
+>>>>>>> a212a1447768be7b988795c4a9f32515c1a036fc
 ```{r}
 #| label: fig-contract_signing_scale
 #| echo: false
