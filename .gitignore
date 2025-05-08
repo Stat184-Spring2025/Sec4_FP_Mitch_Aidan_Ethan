@@ -48,3 +48,5 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 final_qmd_file.pdf
+final_qmd_file_files/figure-pdf/NHL GP Graph-1.pdf
+final_qmd_file_files/figure-pdf/NHL P/GP Graph-1.pdf

@@ -210,6 +210,30 @@ rookie_stats_2024_qb <- rookie_stats_2024 %>%
             rushes = sum(carries),
             rush_yds = sum(rushing_yards),
   )
+total_rookie_stats_qb <- bind_rows(
+  list(rookie_stats_2020_qb, rookie_stats_2021_qb, rookie_stats_2022_qb, rookie_stats_2023_qb, rookie_stats_2024_qb)) %>%
+  group_by(Player) %>%
+  summarise(total_yds = sum(total_yds),
+            comp = sum(comp),
+            att = sum(att),
+            yds = sum(yds),
+            tds = sum(passing_td),
+            ints = sum(ints),
+            rushes = sum(rushes),
+            rush_yds = sum(rush_yds),
+            qbr = (((((sum(comp) / sum(att)) - 0.3) * 5) +
+                      (((sum(yds)/sum(att)) - 3) * 0.25) +
+                      ((sum(passing_td)/sum(att) * 20)) +
+                      (2.375 - (sum(ints)/sum(att)) * 25)
+            ) / 6) * 100
+  )
+total_rookie_stats_qb_salary <- inner_join(
+  x = total_rookie_stats_qb,
+  y = extensions_qb,
+  by = join_by(Player == Player)
+)
+total_rookie_stats_qb_salary$`Value` = as.numeric(gsub("[\\$,]","", total_rookie_stats_qb_salary$`Value`))
+
 ## RB
 rookie_stats_2020_rb <- rookie_stats_2020 %>%
   filter(position == "RB") %>%
@@ -403,7 +427,7 @@ draft_contract_scale <- ggplot(rookie_scale, aes(x = Pick, y = `Total Value` )) 
   geom_vline(xintercept = 32, color = "orange", linewidth = 1, alpha = 0.4) +
   geom_vline(xintercept = 64, color = "orange", linewidth = 1, alpha = 0.4) +
   geom_vline(xintercept = 106, color = "orange", linewidth = 1, alpha = 0.4)
-  
+
 
 ## Position vs. average contract value
 player_contracts <- load_contracts()
@@ -434,7 +458,7 @@ total_rookie_stats_qb <- bind_rows(
             comp = sum(comp),
             att = sum(att),
             yds = sum(yds),
-            tds = sum(passing_td),
+            passing_td = sum(passing_td),
             ints = sum(ints),
             rushes = sum(rushes),
             rush_yds = sum(rush_yds),
@@ -470,11 +494,12 @@ stats_salary_plot <- ggplot(data = stats_salary,
   scale_y_continuous(labels = marks_no_sci)
 stats_salary_plot
 
+# Dollar per score by position table
 dollar_per_td_by_pos <- stats_salary %>%
   group_by(Pos) %>%
   summarise(Touchdowns = sum(tds),
             `Total Salary` = sum(Value),
-            `td/dollar` = sum(Value)/sum(tds)
+            `$$ per Touchdown` = sum(Value)/sum(tds)
   ) %>%
   adorn_totals(where = c("row")) %>%
   adorn_percentages(denominator = "col") %>%
