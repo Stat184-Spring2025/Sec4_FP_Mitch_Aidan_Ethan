@@ -877,15 +877,20 @@ dollar_per_td_by_pos %>% kable(
 This is a summary table based upon the visualization above. Using the same sample size, we can look at the makeup of their salaries, total touchdowns, and the relation between them. QBs are scoring the vast majority of touchdowns, making up more than three quarters of the sample data. However, this table breeds a very important relation that is applicable across all point scorers, which is Dollars per Touchdown. QBs, on average, will make about 2 million dollars per touchdown they score, and WRs about 3 and a quarter million per score. But RBs get a little interesting. The running back position in the NFL has been a very controversial position in regards to payment. They are the most injury-prone, and have some of the lowest pay in the league for their troubles. Consulting the Position vs. Salary graph, we can see that they have some of the lowest median and mean pay for their position group. However, when evaluated along the same criteria I have been using, we can see that they will be paid a whopping 8.4 million per touchdown that they score. So we see here that RBs might not score the most often or get paid frequently, but when they score, it is apparent that it means a lot more in terms of monetary value.
 
 ## Comparing Sports
+
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
   
 For the NFL, the main factors that play into a rookie player's salary and contract value are draft positioning, and if they are a point scorer or not. Draft positioning from the draft position vs. contract graph proves the first point among what factors affect a player's contract value. The second, according to the position vs. contract grouped plot, that we see is that point scorers, especially quarterbacks, get the bag at an incredibly disproportionate level. 
 
-
-
-
+For the NHL, the main factor that impacted a player's salary was points per game. This makes sense because if a player is scoring or assisting a lot, they are valuable and teams will want to keep them. This makes the team willing to pay them more. Another factor that impacted a player's salary was games played. This also makes sense because if a coach is choosing to play someone, it is likely because they are good which means they get paid more.
 
 After comparison between all three sports, we can identify that the one commonality is how they score. Whether its points per game or touchdowns, the main idea is if you score you get paid. As much as draft "stock" and positioning play into a player's initial rookie contract, their prolonged success (and consequently payment and contract value) is determined by how efficient they are at scoring.
+
+## Citations
+
+“Statistics.” NHL.Com, www.nhl.com/stats/. Accessed 7 May 2025.
+
+NHL | Spotrac.Com, www.spotrac.com/nhl. Accessed 8 May 2025. 
 
 ## Code Apendix
 
