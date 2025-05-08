@@ -194,7 +194,6 @@ gp_graph <- ggplot(all_rookie_stats, aes(
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-alt: Graph comparing points per game played to average salary of their next contract.
 ppg_graph
 ```
   This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
@@ -204,7 +203,6 @@ ppg_graph
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-alt: Graph comparing games played to average salary of their next contract.
 gp_graph
 ```
 
