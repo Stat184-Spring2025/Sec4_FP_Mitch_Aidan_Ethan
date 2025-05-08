@@ -6,6 +6,7 @@ format: pdf
 ---
 
 ## Overview
+
 The goal of our project is to see if there is a relation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
 
 ## NHL Data
@@ -183,12 +184,13 @@ gp_graph <- ggplot(all_rookie_stats, aes(
     title = "Games Played vs. Average Salary of Their Next Contract"
   )
 ```
-  The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
-  
-  The NHL player statistics were pulled from nhl.com using their export feature. Their website allows users to filter statistics for players drafted in certain drafts across specific seasons. They provide an export button to export the filtered statistics into an excel file. The contract data was taken from spotrac.com. There was no way to scrape the data directly using R because there was not a page that had all of the information I needed. I had to manually enter player's contract information into an excel file that had the first 50 players drafted in 2015 and 2016. I then had to wrangle the data to remove cases that had empty values. I was then able to merge the files together so every player had their correct statistics for their rookie contract. This resulted in each case being individual player.
-  
-  This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned. I also used tidyverse to create the following data visualizations.
-  
+
+The NHL's draft is different from other leagues because drafted players often do not join their teams right away. This leads rookie contracts for players drafted in the same year to not end at the same time. This created some challenges because I could not simply merge a table of players in a draft class with their statistics over the next three seasons. I had to get data for different three season periods because of this. This allowed me to merge players with the correct statistics for their rookie contract.
+
+The NHL player statistics were pulled from nhl.com using their export feature. Their website allows users to filter statistics for players drafted in certain drafts across specific seasons. They provide an export button to export the filtered statistics into an excel file. The contract data was taken from spotrac.com. There was no way to scrape the data directly using R because there was not a page that had all of the information I needed. I had to manually enter player's contract information into an excel file that had the first 50 players drafted in 2015 and 2016. I then had to wrangle the data to remove cases that had empty values. I was then able to merge the files together so every player had their correct statistics for their rookie contract. This resulted in each case being individual player.
+
+This data adheres to CARE principles because all of the data I used is publicly available and I gave credit to them. It also adheres to FAIR principles because this data is easily found at the websites I mentioned. I also used tidyverse to create the following data visualizations.
+
 ```{R}
 #| label: NHL P/GP Graph
 #| echo: false
@@ -197,7 +199,8 @@ gp_graph <- ggplot(all_rookie_stats, aes(
 #| fig-alt: Graph comparing points per game played to average salary of their next contract.
 ppg_graph
 ```
-  This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
+
+This data visualization shows the relationship between a player's points per game played and the average salary of of their next contract. In the NHL, when a player scores a goal or assists on a goal they are awarded a point. There is a clear relationship here that shows that the more points per game played a player gets, the higher their next contract is worth. There is an outlier in this data set where a player had 1 point per game but did not receive a contract after their rookie contract ended. This case is Egor Korshkov who decided to play in the Russian league after his rookie contract was over.
 
 ```{R}
 #| label: NHL GP Graph
@@ -208,19 +211,25 @@ ppg_graph
 gp_graph
 ```
 
-  This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played. This is an example of exploratory data analysis because the goal of these visualizations is to see if there are any relationships, not confirming a hypothesis.
+This data visualization shows the relationship between games played during a player's rookie contract and the average salary of their next contract. There is still a relationship in this graph but it is not as strong as the first one. This means that the strongest predictor for average salary in the NHL is points per game played. This is an example of exploratory data analysis because the goal of these visualizations is to see if there are any relationships, not confirming a hypothesis.
 
 ## NBA Data
 
-## Three-Point Shooting vs Salary
+### Three-Point Shooting Over Time
 
-The NBA has been 
+Since the implementation of the 1979-1980 Season, NBA teams have been taking more threes every year. The graph below is the league average 3-pointers attempted per game for a team.
 
 ```{r}
+#| label: ThreeAttemptsPerYear
+#| echo: false
+#| warning: false
+#| eval: true
+
 library(rvest)
 library(tidyverse)
 library(dplyr)
 
+# Scrapes 2024-2025 regular season player stats from basketball reference
 LeagueStatsWebPage <- read_html(
   "https://www.basketball-reference.com/leagues/NBA_stats_per_game.html#stats-Regular-Season"
 ) %>% html_elements(css = "table") %>%
@@ -230,8 +239,6 @@ LeagueStatsRaw <- LeagueStatsWebPage[[1]]
 
 # Converts names of columns
 colnames(LeagueStatsRaw) <- c("Rank", "Season", "Lg", "Age", "Height", "Weight", "Games", "MPG", "FGM", "FGA", "ThreePM", "ThreePA", "FT", "FTA", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "FGPercent", "ThreePercent", "FTPercent", "Pace", "eFG%", "TOVPercent", "ORBPercent", "FT/FGA", "ORtg", "TSPercent")
-
-# Removes all but Year, 3PA, and 3P%
 
 # Function to convert Season to Year format
 convert_year <- function(year) {
@@ -245,7 +252,7 @@ convert_year <- function(year) {
   return(newYear)
 }
 
-# Removes all but Year, 3PA, and 3P% and removes leftover column name rows
+# Removes all but Year, 3PA, and 3P% and removes leftover column name rows. Also filters out years from before 1980 where there was no three point data.
 LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent") %>%
   filter(Season != "Season") %>%
   filter(ThreePercent != "Shooting") %>%
@@ -255,9 +262,11 @@ LeagueStatsCleaned <- select(LeagueStatsRaw, "Season", "ThreePA", "ThreePercent"
   ) %>%
   filter(Season > 1979)
 
+# Makes char type data numeric
 LeagueStatsCleaned <- mutate(LeagueStatsCleaned, ThreePA = as.numeric(ThreePA))
 LeagueStatsCleaned <- mutate(LeagueStatsCleaned, Year = as.numeric(Year))
 
+# Graphs league average three point attempts per game
 ggplot(
   data = LeagueStatsCleaned,
   mapping = aes(
@@ -267,10 +276,167 @@ ggplot(
 ) + geom_line() +
   theme_bw() +
   labs(
+    title = "3-Point Attempts Over Time",
     x = 'Year',
-    y = 'Three Pointers Attempted Per Game'
+    y = 'Average Three Pointers Attempted Per Game'
   )
 
+```
+
+### Three-Point Percentage vs Salary
+
+With the exception of the center position, every player in the NBA is expected to shoot threes efficiently. You will find very few NBA players that are paid more than 20 million dollars per year that shoot less than 25% from three. The few that do are Power Forwards (PF) and Centers (C) who can traditionally create value from their size with rebounds and blocks.
+
+```{r}
+#| label: ThreePointPercentSalary
+#| echo: false
+#| warning: false
+#| eval: true
+
+library(rvest)
+library(tidyverse)
+library(dplyr)
+library(scales)
+
+
+#Takes the 2024-2025 players' salary information from basketball reference
+SalaryWebPage <- read_html(
+  "https://www.basketball-reference.com/contracts/players.html#player-contracts"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+SalaryRaw <- SalaryWebPage[[1]]
+
+# Renames the columns
+colnames(SalaryRaw) <- c(
+  "Rank", "Player", "Team", "Salary", "Salary1", "Salary2", "Salary3", "Salary4", "Salary5", "Guaranteed")
+
+# Removes undesired tables
+SalaryCleaned <- select(SalaryRaw, -"Salary1", -"Salary2", -"Salary3", -"Salary4", -"Salary5", -"Guaranteed") %>%
+  filter(Rank != "Rk") %>%
+  filter(Salary != "Salary")
+
+SalaryCleaned$Salary = as.numeric(gsub("[\\$,]", "", SalaryCleaned$Salary))
+
+#---------------------------------------------------------------------------
+
+# Takes the 2024-2025 players regular season per game stats from basketball reference
+StatsWebPage <- read_html(
+  "https://www.basketball-reference.com/leagues/NBA_2025_per_game.html#per_game_stats"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+StatsRaw <- StatsWebPage[[1]]
+
+# Drops awards table
+StatsCleaned <- select(StatsRaw, -"Awards")
+
+#---------------------------------------------------------------------------
+
+# Joins Stats and Salary tables; drops "2TM" and old teams for traded players
+Players <- inner_join(SalaryCleaned, StatsCleaned)
+
+# Graphs 
+ggplot(
+  data = Players,
+  mapping = aes(
+  x = `3P%`,
+  y = Salary,
+  color = `Pos`
+  )
+) + geom_point() +
+  scale_y_continuous(
+    labels = label_currency(),
+    n.breaks = 6
+  ) +
+  theme_bw() +
+  labs(
+    title = '3-Point Percent vs Salary',
+    x = 'Three-Point Percentage',
+    y = 'Salary (USD)'
+  )
+
+```
+
+### Rookie Production vs First Salary
+
+The graph below shows the relationship between the 2019-2020 rookie production (measured in PPG) and Salary in 2024-2025, which is the first year that most signed their first contract after their rookie contracts. Usually rookie contracts act as a sort of trial period that pay better every year for four years. Starting in their fifth year, rookies can sign a full contract that pays much more. This is a performance incentive for rookies.
+
+```{r}
+#| label: RookieProductionSalary
+#| echo: false
+#| warning: false
+#| eval: true
+
+library(rvest)
+library(tidyverse)
+library(dplyr)
+
+# Reads 2019-2020 rookie data from basketball reference
+RookiesWebPage <- read_html(
+  "https://www.basketball-reference.com/leagues/NBA_2020_rookies-season-stats.html#rookies"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+RookiesRaw <- RookiesWebPage[[1]]
+
+# Renames columns
+colnames(RookiesRaw) <- c( 
+  "Rank", "Player", "Debut", "Age", "EXP", "GP", "MP", "FG", "FGA", "ThreePM", "ThreePA", "TFTM", "TFTA", "TORB", "TTRB", "TAST", "STL", "TBLK", "TOV", "PF", "TPTS", "FGPercent", "ThreePercent", "FTPercent", "MPG", "PPG", "TRB", "APG", "SPG", "BPG"
+)
+
+# Removes all columns except Player, PPG, and ThreePercent
+RookiesCleaned <- select(RookiesRaw, "Player", "PPG", "ThreePercent") %>%
+  filter(PPG != "Per Game") %>%
+  filter(Player != "Player")
+
+#------------------------------------------------------------------------------
+
+#Takes the 2024-2025 players' salary information from basketball reference
+SalaryWebPage <- read_html(
+  "https://www.basketball-reference.com/contracts/players.html#player-contracts"
+) %>% html_elements(css = "table") %>%
+  html_table()
+
+SalaryRaw <- SalaryWebPage[[1]]
+
+#Renames the columns
+colnames(SalaryRaw) <- c(
+  "Rank", "Player", "Team", "Salary", "Salary1", "Salary2", "Salary3", "Salary4", "Salary5", "Guaranteed")
+
+SalaryCleaned2 <- select(SalaryRaw, "Player", "Salary") %>%
+  filter(Player != "Player") %>%
+  filter(Salary != "Salary")
+
+# Formats char type salary info as numeric without dollar sign or commas
+SalaryCleaned2$Salary = as.numeric(gsub("[\\$,]", "", SalaryCleaned2$Salary))
+
+#------------------------------------------------------------------------------
+
+# Joins SalaryCleaned2 and RookiesCleaned dataframes
+RookiesSalaryCleaned <- inner_join(SalaryCleaned2, RookiesCleaned)
+
+# Changes PPG from char type to numeric
+RookiesSalaryCleaned <- mutate(RookiesSalaryCleaned, PPG = as.numeric(PPG))
+
+# Graphs PPG of rookie year vs 2024-2025 salary
+ggplot(
+  data = RookiesSalaryCleaned,
+  mapping = aes(
+  x = PPG,
+  y = Salary
+  )
+) + geom_point() +
+  scale_y_continuous(
+    labels = label_currency(),
+    n.breaks = 6
+  ) +
+  theme_bw() +
+  labs(
+    title = "Rookie PPG vs First Contract Salary",
+    x = 'Points Per Game',
+    y = 'Salary (USD)'
+  )
 ```
 
 ## NFL Data
@@ -743,7 +909,6 @@ View(dollar_per_td_by_pos)
 
 ```
 
-
 ```{r}
 #| message: false
 #| warning: false
@@ -857,9 +1022,9 @@ dollar_per_td_by_pos %>% kable(
   kable_paper("hover", full_width = T)
 ```
 
-
 ## Comparing Sports
-  All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
+
+All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
 
 ## Code Apendix
 
