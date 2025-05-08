@@ -5,14 +5,8 @@ date: "5/7/2025"
 format: pdf
 ---
 
-<<<<<<< HEAD
-## Overview/Introduction
-
-The goal of our project is to see if there is a correlation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
-=======
 ## Overview
 The goal of our project is to see if there is a relation between an athlete’s performance during their rookie contract and how much their next contract is worth. We are looking at the NHL, NBA, and NFL to see if there are major differences between the leagues.
->>>>>>> 7a878ab6e8cc96cc0a9e93b5ecc37eb9d467f2be
 
 ## NHL Data
 
@@ -688,8 +682,6 @@ View(dollar_per_td_by_pos)
 
 ```
 
-<<<<<<< HEAD
-## Data Visualizations/Exploratory Data Analysis
 
 ```{r}
 #| message: false
@@ -804,11 +796,9 @@ dollar_per_td_by_pos %>% kable(
   kable_paper("hover", full_width = T)
 ```
 
-## FAIR/CARE
-=======
+
 ## Comparing Sports
   All three leagues we looked at have at least one player statistic that has a strong relationship with the average salary of their next contract. This shows that it is possible to predict the value of a player's contract only with one or two statistics. This is important to recognize for players so they can ensure they are being paid adequately.
->>>>>>> 7a878ab6e8cc96cc0a9e93b5ecc37eb9d467f2be
 
 ## Code Apendix
 
